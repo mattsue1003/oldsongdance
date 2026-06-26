@@ -16,10 +16,20 @@
   .controls{max-width:1000px;margin:14px auto 0;padding:0 16px;}
   .search{width:100%;font-size:17px;padding:12px 14px;border:2px solid var(--line);border-radius:10px;outline:none;}
   .search:focus{border-color:var(--accent);}
-  .filtergroups{margin-top:12px;}
+  .filtertoggle{margin-top:10px;display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:9px 13px;cursor:pointer;font-size:14px;font-weight:700;color:var(--accent2);user-select:none;width:100%;}
+  .filtertoggle .arrow{margin-left:auto;transition:transform .2s;}
+  .filtertoggle.open .arrow{transform:rotate(180deg);}
+  .filtertoggle .badge{background:var(--accent);color:#fff;border-radius:999px;font-size:12px;padding:1px 8px;font-weight:700;}
+  .filtergroups{margin-top:10px;}
+  .filtergroups.hidden{display:none;}
   .group{margin-bottom:8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
   .glabel{font-size:13px;color:var(--muted);min-width:46px;font-weight:700;}
   .tag{font-size:14px;padding:6px 13px;border:1.5px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;user-select:none;}
+  @media(max-width:679px){
+    .tag{font-size:13px;padding:5px 11px;}
+    .group{margin-bottom:6px;gap:5px;}
+    .glabel{min-width:38px;font-size:12px;}
+  }
   .tag:hover{border-color:var(--accent);}
   .tag.on{background:var(--accent);color:#fff;border-color:var(--accent);}
   .tag.region.on{background:#b25e22;border-color:#b25e22;}
@@ -55,7 +65,8 @@
 
 <div class="controls">
   <input id="q" class="search" type="text" placeholder="🔍 搜尋歌名（例如：望春風、甜蜜蜜、Sweet Caroline）">
-  <div class="filtergroups" id="filters"></div>
+  <div class="filtertoggle" id="filtertoggle"><span>🏷️ 篩選標籤</span><span class="badge" id="selbadge" style="display:none">0</span><span class="arrow">▾</span></div>
+  <div class="filtergroups hidden" id="filters"></div>
   <div class="bar">
     <span class="count" id="count"></span>
     <button class="clear" id="clear">✕ 清除篩選</button>
@@ -302,12 +313,28 @@ function render(){
   });
 }
 
+// collapsible filter toggle (default collapsed on mobile, open on desktop)
+const toggleEl = document.getElementById('filtertoggle');
+const badgeEl = document.getElementById('selbadge');
+function updateBadge(){
+  const n = selected.size;
+  badgeEl.style.display = n ? 'inline-block' : 'none';
+  badgeEl.textContent = n;
+}
+toggleEl.onclick=()=>{
+  filtersEl.classList.toggle('hidden');
+  toggleEl.classList.toggle('open', !filtersEl.classList.contains('hidden'));
+};
+if(window.innerWidth>=680){ filtersEl.classList.remove('hidden'); toggleEl.classList.add('open'); }
+
 qEl.addEventListener('input', render);
 document.getElementById('clear').onclick=()=>{
   selected.clear(); qEl.value='';
   document.querySelectorAll('.tag.on').forEach(b=>b.classList.remove('on'));
-  render();
+  updateBadge(); render();
 };
+const _origRender = render;
+render = function(){ _origRender(); updateBadge(); };
 render();
 </script>
 </body>
