@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音樂律動影片資料庫（綜合版）</title>
+<meta name="description" content="__TOTAL__ 支長輩可跟著做的音樂律動影片：坐姿律動、站姿律動，台語老歌、國語金曲、新歌流行舞曲，全部由台灣老師示範，依年代篩選。">
+<style>
+  :root{
+    --sky1:#7cc8f8;--sky2:#bfe6ff;--sky3:#eef8ff;
+    --blue:#1f7fd6;--blue2:#145fa6;--ink:#17324d;--muted:#5b7389;--line:#d6e9f8;--card:#fff;
+    --sun:#ffc23d;--sun2:#f5a300;
+    --sit:#11a88a;--sitbg:#e2f7f1;--stand:#ff7a4d;--standbg:#fff0e9;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;margin:0;color:var(--ink);line-height:1.5;
+    background:linear-gradient(180deg,var(--sky1) 0,var(--sky2) 360px,var(--sky3) 760px,var(--sky3) 100%);background-color:var(--sky3);min-height:100vh;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px;position:relative;z-index:1;}
+
+  /* 天空與雲 */
+  .sky{position:relative;overflow:hidden;overflow:clip;padding:26px 0 18px;}
+  .cloud{position:absolute;background:#fff;border-radius:999px;opacity:.92;pointer-events:none;}
+  .cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%;}
+  .cloud::before{width:55%;height:180%;left:14%;bottom:20%;}
+  .cloud::after{width:40%;height:140%;right:12%;bottom:25%;}
+  .c1{width:150px;height:40px;top:34px;right:6%;animation:drift 38s linear infinite alternate;}
+  .c2{width:96px;height:28px;top:118px;right:4%;opacity:.75;animation:drift 30s linear infinite alternate-reverse;}
+  .c3{width:120px;height:34px;top:14px;left:-30px;opacity:.8;animation:drift 44s linear infinite alternate;}
+  .sun{position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#fff6c9 0,#ffe27a 45%,rgba(255,226,122,0) 70%);pointer-events:none;}
+  @media(max-width:679px){.c1{top:-14px;right:-30px}.c2{display:none}}
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-60px)}}
+  @media (prefers-reduced-motion:reduce){.cloud{animation:none}}
+
+  h1{font-size:30px;margin:0;color:#fff;letter-spacing:1px;text-shadow:0 2px 0 rgba(20,95,166,.35);position:relative;}
+  h1 small{font-size:15px;font-weight:700;color:var(--blue2);background:var(--sun);border-radius:999px;padding:3px 12px;margin-left:10px;vertical-align:middle;text-shadow:none;}
+  .desc{font-size:15px;color:#fff;margin-top:4px;position:relative;text-shadow:0 1px 2px rgba(20,95,166,.35);}
+  @media(max-width:679px){h1{font-size:25px}.desc{font-size:14px}}
+
+  .panel{background:rgba(255,255,255,.96);border-radius:20px;box-shadow:0 8px 24px rgba(31,127,214,.14);padding:16px 16px 14px;margin-top:16px;position:relative;}
+
+  /* 坐姿／站姿 大分類 */
+  .pose{display:grid;grid-template-columns:1fr 1.4fr 1.4fr;gap:10px;}
+  .pbtn{border:2.5px solid var(--line);background:#fff;border-radius:16px;padding:10px 8px;cursor:pointer;font-family:inherit;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .12s;}
+  .pbtn:hover{transform:translateY(-2px);}
+  .pbtn svg{flex:none;width:34px;height:34px;}
+  .pbtn .pt{font-size:19px;font-weight:800;line-height:1.15;text-align:left;}
+  .pbtn .pt i{display:block;font-style:normal;font-size:12.5px;font-weight:500;color:var(--muted);}
+  .pbtn.all.on{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .pbtn.sit{border-color:#bfeadf;} .pbtn.sit.on{background:var(--sit);border-color:var(--sit);color:#fff;}
+  .pbtn.stand{border-color:#ffd6c6;} .pbtn.stand.on{background:var(--stand);border-color:var(--stand);color:#fff;}
+  .pbtn.on .pt i{color:rgba(255,255,255,.9);}
+  .pbtn.on svg *{stroke:#fff;}
+  @media(max-width:679px){.pose{grid-template-columns:1fr 1fr;}.pbtn.all{grid-column:1/-1;padding:7px;}.pbtn .pt{font-size:17px}.pbtn svg{width:28px;height:28px}}
+
+  /* 年代 */
+  .era-title{font-size:15px;font-weight:800;color:var(--blue2);margin:16px 0 8px;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;}
+  .era-title span{font-weight:400;color:var(--muted);font-size:12.5px;}
+  .timeline{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;align-items:end;}
+  .dec{border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 2px 5px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit;color:inherit;}
+  .dec:hover{border-color:var(--blue);}
+  .dec .bar{width:60%;background:linear-gradient(180deg,#9fd3fb,#5fb2f2);border-radius:5px 5px 2px 2px;min-height:4px;}
+  .dec .lab{font-size:14px;font-weight:800;line-height:1.1;}
+  .dec .lab i{font-style:normal;font-size:10.5px;font-weight:500;display:block;color:var(--muted);}
+  .dec .n{font-size:11px;color:var(--muted);}
+  .dec.on{background:var(--sun);border-color:var(--sun2);}
+  .dec.on .bar{background:#fff;}
+  @media(max-width:679px){.timeline{grid-template-columns:repeat(6,1fr);}.dec .bar{display:none;}}
+
+  .searchrow{display:flex;gap:8px;margin-top:14px;}
+  .search{flex:1;min-width:0;font-size:17px;padding:11px 16px;border:2px solid var(--line);border-radius:999px;outline:none;background:#f7fbff;font-family:inherit;color:var(--ink);}
+  .search:focus{border-color:var(--blue);background:#fff;}
+  .lucky{flex:none;font-size:15px;font-weight:800;padding:0 18px;border-radius:999px;border:none;background:var(--sun);color:var(--ink);cursor:pointer;font-family:inherit;box-shadow:0 3px 0 var(--sun2);}
+  .lucky:active{transform:translateY(2px);box-shadow:0 1px 0 var(--sun2);}
+  .filtertoggle{margin-top:10px;display:flex;align-items:center;gap:8px;background:#f2f8fe;border:none;border-radius:12px;padding:9px 14px;cursor:pointer;font-size:14px;font-weight:700;color:var(--blue2);width:100%;font-family:inherit;}
+  .filtertoggle .arrow{margin-left:auto;transition:transform .2s;}
+  .filtertoggle.open .arrow{transform:rotate(180deg);}
+  .filtertoggle .badge{background:var(--blue);color:#fff;border-radius:999px;font-size:12px;padding:1px 8px;}
+  .filtergroups{margin-top:10px;}
+  .filtergroups.hidden{display:none;}
+  .group{margin-bottom:8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+  .glabel{font-size:13px;color:var(--muted);min-width:46px;font-weight:700;}
+  .tag{font-size:14px;padding:5px 13px;border:2px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;font-family:inherit;color:inherit;}
+  .tag:hover{border-color:var(--blue);}
+  .tag.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+  .tag .k{font-size:11.5px;opacity:.65;margin-left:3px;}
+  @media(max-width:679px){.tag{font-size:13px;padding:4px 10px;}.glabel{min-width:38px;font-size:12px;}}
+
+  .bar2{display:flex;justify-content:space-between;align-items:center;margin:16px 0 8px;gap:10px;flex-wrap:wrap;}
+  .count{font-size:15px;color:var(--muted);}
+  .count b{color:var(--blue2);font-size:18px;}
+  .right{display:flex;align-items:center;gap:10px;}
+  .sort{font-size:14px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;background:#fff;font-family:inherit;color:inherit;}
+  .clear{font-size:14px;color:var(--blue);cursor:pointer;background:none;border:none;font-family:inherit;font-weight:700;}
+
+  .list{display:grid;grid-template-columns:1fr;gap:12px;padding-bottom:30px;}
+  @media(min-width:680px){.list{grid-template-columns:1fr 1fr;}}
+  @media(min-width:980px){.list{grid-template-columns:1fr 1fr 1fr;}}
+  .sec{grid-column:1/-1;font-size:18px;font-weight:800;color:var(--blue2);margin:12px 0 0;display:flex;align-items:center;gap:10px;}
+  .sec::after{content:"";flex:1;height:3px;border-radius:3px;background:linear-gradient(90deg,#9fd3fb,rgba(159,211,251,0));}
+  .sec span{font-size:13px;font-weight:500;color:var(--muted);}
+  .card{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 3px 12px rgba(31,127,214,.09);border-top:5px solid var(--line);}
+  .card.sit{border-top-color:var(--sit);} .card.stand{border-top-color:var(--stand);}
+  .card.flash{animation:flash 1.8s ease;}
+  @keyframes flash{0%,45%{box-shadow:0 0 0 5px var(--sun);}100%{box-shadow:0 3px 12px rgba(31,127,214,.09);}}
+  .top{display:flex;align-items:flex-start;gap:8px;}
+  .ctitle{font-size:19px;font-weight:800;flex:1;line-height:1.3;}
+  .year{flex:none;font-size:13px;font-weight:800;color:var(--ink);background:var(--sun);border-radius:8px;padding:2px 8px;margin-top:2px;white-space:nowrap;}
+  .year.folk{background:#e3eef8;color:var(--blue2);}
+  .poseb{align-self:flex-start;font-size:13.5px;font-weight:800;border-radius:999px;padding:3px 12px;}
+  .poseb.sit{background:var(--sitbg);color:#0b7f68;} .poseb.stand{background:var(--standbg);color:#d2552a;}
+  .meta{font-size:13px;color:var(--muted);}
+  .ctags{display:flex;flex-wrap:wrap;gap:5px;}
+  .ct{font-size:12px;padding:2px 9px;border-radius:999px;background:#eef5fc;color:#4a6782;}
+  .ct.region{background:#dcefff;color:var(--blue2);font-weight:700;}
+  .ct.new{background:#fff3cf;color:#9a6a00;font-weight:700;}
+  .play{align-self:flex-start;margin-top:auto;background:var(--blue);color:#fff;text-decoration:none;padding:8px 18px;border-radius:999px;font-size:15px;font-weight:700;box-shadow:0 3px 0 var(--blue2);}
+  .play:hover{background:var(--blue2);}
+  .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;}
+  .credits{margin:10px 0 50px;padding:20px 22px;background:#fff;border-radius:16px;box-shadow:0 3px 12px rgba(31,127,214,.09);border-left:6px solid var(--blue);}
+  .credits h2{font-size:18px;margin:0 0 10px;color:var(--blue2);}
+  .credits p{font-size:14px;line-height:1.7;color:#35506a;margin:0 0 8px;}
+  .credits p.other{font-size:13px;color:var(--muted);}
+  .credits a{color:var(--blue);}
+</style>
+</head>
+<body>
+<div class="sky">
+  <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  <div class="wrap">
+    <h1>音樂律動影片資料庫<small>綜合版</small></h1>
+    <div class="desc">__TOTAL__ 支長輩可跟著做的律動影片　·　台語老歌、國語金曲、客家民謠、新歌流行舞曲、外語歌　·　全部由台灣老師示範</div>
+
+    <div class="panel">
+      <div class="pose" id="pose">
+        <button class="pbtn all on" data-p="" type="button"><span class="pt">全部<i id="pc-all"></i></span></button>
+        <button class="pbtn sit" data-p="坐姿" type="button">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#11a88a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="7" r="4"/><path d="M17 12v12h10l2 10"/><path d="M17 17l8 3"/><path d="M10 24h10M10 24v12M10 30h12"/></svg>
+          <span class="pt">坐姿律動<i id="pc-sit"></i></span></button>
+        <button class="pbtn stand" data-p="站姿" type="button">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#ff7a4d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="6" r="4"/><path d="M20 11v13"/><path d="M11 13l9 4 9-4"/><path d="M20 24l-6 12M20 24l6 12"/></svg>
+          <span class="pt">站姿律動<i id="pc-stand"></i></span></button>
+      </div>
+
+      <div class="era-title">依歌曲年代找<span>點年代可複選；年份為原曲發行年，約略參考</span></div>
+      <div class="timeline" id="timeline"></div>
+
+      <div class="searchrow">
+        <input id="q" class="search" type="search" placeholder="搜尋歌名、歌手、頻道" aria-label="搜尋歌名、歌手或頻道">
+        <button class="lucky" id="lucky" type="button" title="從目前篩選結果隨機挑一首">隨機一首</button>
+      </div>
+      <button class="filtertoggle" id="filtertoggle" type="button" aria-expanded="false"><span>更多篩選：語言・類型・道具・頻道</span><span class="badge" id="selbadge" style="display:none">0</span><span class="arrow">▾</span></button>
+      <div class="filtergroups hidden" id="filters"></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="bar2">
+    <span class="count" id="count"></span>
+    <div class="right">
+      <select class="sort" id="sort" aria-label="排序">
+        <option value="decade">依年代分段（舊→新）</option>
+        <option value="decade-desc">依年代分段（新→舊）</option>
+        <option value="region">依語言分段</option>
+        <option value="title">依歌名</option>
+      </select>
+      <button class="clear" id="clear" type="button">清除篩選</button>
+    </div>
+  </div>
+  <div class="list" id="list"></div>
+
+  <footer class="credits">
+    <h2>資料來源與致謝</h2>
+    <p>本資料庫收錄的影片皆為 YouTube 上公開分享的長輩律動、椅子舞、健康操影片，來自台灣三十個頻道的老師與團隊，包括
+      <a href="https://www.youtube.com/channel/UC-_VYcrB2WUzrP3Lx2eXP8w" target="_blank" rel="noopener"><strong>「長照2.0銀髮族健康促進」</strong></a>（黃鈺媄、葉嘉淇老師）、「健康2.0 挖健康 Max 老師」、冰冰老師、曾小貞健康操、謝美惠樂齡運動舞蹈、Gina Peng、林秀霞老師、鄭芳枝老師、愛運動美芝、林維茜老師等社區據點與樂齡課程。為了讓內容多元，單一頻道最多占四分之一，同一首歌最多收兩支（坐姿、站姿各一）。
+      感謝各位老師與團隊長期無償製作、分享這麼多適合長輩的影片，讓阿公阿嬤、照顧者與社區據點都能免費跟著動起來。本資料庫僅作整理彙編、方便查找之用，著作權與一切心血歸原頻道所有。</p>
+    <p class="other" id="chlist"></p>
+    <p class="other">歌曲年份為原曲首次發行或走紅的年份，翻唱、改編以原曲為準；「民謠・童謠」為 1930 年以前或年代不可考的傳統歌謠；「年代待查」是目前查不到可靠出處的歌曲。若有誤植，或原作者不希望被收錄，請告知，將立即修正或移除。</p>
+  </footer>
+</div>
+
+<script>
+const TW="長照2.0銀髮族健康促進", MAX="健康2.0【挖健康】Max老師";
+// t 歌名 · r 地區 · c 頻道 · g 標籤（第一個是坐姿／站姿）· u YouTube ID · y 原曲年份（0＝民謠，-1＝待查）· s 原唱 · n 1＝本次新增
+const V = __DATA__;
+
+const DECADES=[
+  {k:"folk",lab:"民謠",sub:"童謠"},
+  {k:1930,lab:"1930",sub:"年代"},{k:1940,lab:"1940",sub:"年代"},{k:1950,lab:"1950",sub:"年代"},
+  {k:1960,lab:"1960",sub:"年代"},{k:1970,lab:"1970",sub:"年代"},{k:1980,lab:"1980",sub:"年代"},
+  {k:1990,lab:"1990",sub:"年代"},{k:2000,lab:"2000",sub:"年代"},{k:2010,lab:"2010",sub:"年代"},{k:2020,lab:"2020",sub:"年代"},
+  {k:"unk",lab:"待查",sub:"年代"}
+];
+const decOf=v=>v.y<0?"unk":(v.y<1930?"folk":Math.floor(v.y/10)*10);
+const decName=k=>k==="folk"?"民謠・童謠":k==="unk"?"年代待查":`${k} 年代`;
+V.forEach(v=>{v.d=decOf(v); v.p=v.g.includes("站姿")?"站姿":"坐姿";});
+
+const chCount={}; V.forEach(v=>chCount[v.c]=(chCount[v.c]||0)+1);
+const MAJOR=Object.entries(chCount).sort((a,b)=>b[1]-a[1]).slice(0,10).map(e=>e[0]);
+const chOf=v=>MAJOR.includes(v.c)?v.c:"其他頻道";
+const GROUPS=[
+  {key:"r",label:"語言",tags:["華台語","外語"]},
+  {key:"g",label:"類型",tags:["有氧","肌力","伸展","帶動跳","椅子舞","動腦"]},
+  {key:"g",label:"道具",tags:["無道具","有道具"]},
+  {key:"ch",label:"頻道",tags:[...MAJOR,"其他頻道"]},
+  {key:"n",label:"收錄",tags:["本次新增"]}
+];
+const has=(v,grp,tag)=>{
+  if(grp.key==="r") return v.r===tag;
+  if(grp.key==="ch") return chOf(v)===tag;
+  if(grp.key==="n") return !!v.n;
+  return v.g.includes(tag);
+};
+
+let pose="";
+const selDec=new Set(), sel=new Map();
+const $=id=>document.getElementById(id);
+const qEl=$("q"), listEl=$("list"), countEl=$("count"), sortEl=$("sort");
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// 坐姿／站姿
+$("pc-all").textContent=`${V.length} 支`;
+$("pc-sit").textContent=`${V.filter(v=>v.p==="坐姿").length} 支`;
+$("pc-stand").textContent=`${V.filter(v=>v.p==="站姿").length} 支`;
+document.querySelectorAll(".pbtn").forEach(b=>{
+  b.setAttribute("aria-pressed",b.classList.contains("on"));
+  b.onclick=()=>{ pose=b.dataset.p; document.querySelectorAll(".pbtn").forEach(x=>{x.classList.toggle("on",x===b);x.setAttribute("aria-pressed",x===b);}); render(); };
+});
+
+// 年代時間軸
+const decCount={}; V.forEach(v=>decCount[v.d]=(decCount[v.d]||0)+1);
+const maxDec=Math.max(...Object.values(decCount));
+DECADES.forEach(d=>{
+  const n=decCount[d.k]||0; if(!n) return;
+  const b=document.createElement("button"); b.className="dec"; b.type="button"; b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<div class="bar" style="height:${Math.round(6+n/maxDec*46)}px"></div><div class="lab">${d.lab}<i>${d.sub}</i></div><div class="n">${n} 首</div>`;
+  b.onclick=()=>{ selDec.has(d.k)?selDec.delete(d.k):selDec.add(d.k); b.classList.toggle("on"); b.setAttribute("aria-pressed",selDec.has(d.k)); render(); };
+  $("timeline").appendChild(b);
+});
+
+// 其他篩選
+GROUPS.forEach((grp,gi)=>{
+  sel.set(gi,new Set());
+  const row=document.createElement("div"); row.className="group";
+  row.innerHTML=`<span class="glabel">${grp.label}</span>`;
+  grp.tags.forEach(tg=>{
+    const n=V.filter(v=>has(v,grp,tg)).length; if(!n) return;
+    const b=document.createElement("button"); b.className="tag"; b.type="button";
+    b.innerHTML=`${esc(tg.replace("【挖健康】"," "))}<span class="k">${n}</span>`;
+    b.onclick=()=>{ const s=sel.get(gi); s.has(tg)?s.delete(tg):s.add(tg); b.classList.toggle("on"); render(); };
+    row.appendChild(b);
+  });
+  $("filters").appendChild(row);
+});
+
+function matches(v){
+  const q=qEl.value.trim().toLowerCase();
+  if(q && !(v.t.toLowerCase().includes(q)||v.c.toLowerCase().includes(q)||(v.s||"").toLowerCase().includes(q))) return false;
+  if(pose && v.p!==pose) return false;
+  if(selDec.size && !selDec.has(v.d)) return false;
+  for(const [gi,s] of sel){ if(s.size && ![...s].some(t=>has(v,GROUPS[gi],t))) return false; }
+  return true;
+}
+
+const REG=["華台語","外語"]; const regName=r=>r==="華台語"?"華語・台語":"外語歌";
+const decIdx=k=>DECADES.findIndex(d=>d.k===k);
+function card(v){
+  const yr=v.d==="folk"?`<span class="year folk">民謠・童謠</span>`:v.d==="unk"?"":`<span class="year" title="${decName(v.d)}">${v.y}</span>`;
+  const cls=v.p==="坐姿"?"sit":"stand";
+  const tags=[`<span class="ct region">${regName(v.r)}</span>`,...v.g.filter(t=>t!=="坐姿"&&t!=="站姿").map(t=>`<span class="ct">${t}</span>`)];
+  if(v.n) tags.push(`<span class="ct new">本次新增</span>`);
+  return `<div class="card ${cls}" data-u="${v.u}"><div class="top"><div class="ctitle">${esc(v.t)}</div>${yr}</div>
+    <span class="poseb ${cls}">${v.p}律動</span>
+    <div class="meta">${v.s?"原唱 "+esc(v.s)+"　·　":""}${esc(v.c)}</div>
+    <div class="ctags">${tags.join("")}</div>
+    <a class="play" href="https://www.youtube.com/watch?v=${v.u}" target="_blank" rel="noopener">▶ 在 YouTube 觀看</a></div>`;
+}
+function render(){
+  const rows=V.filter(matches), mode=sortEl.value;
+  const nSel=selDec.size+[...sel.values()].reduce((a,s)=>a+s.size,0);
+  const badge=$("selbadge"); badge.style.display=nSel?"inline-block":"none"; badge.textContent=nSel;
+  countEl.innerHTML=`顯示 <b>${rows.length}</b> / ${V.length} 支`;
+  if(!rows.length){ listEl.innerHTML='<div class="empty">找不到符合的影片，試試其他關鍵字或清除篩選。</div>'; return; }
+  let html="";
+  const byTitle=(a,b)=>a.t.localeCompare(b.t,"zh-Hant");
+  if(mode==="title"){ html=rows.sort(byTitle).map(card).join(""); }
+  else{
+    const keyOf=mode==="region"?(v=>v.r):(v=>v.d);
+    const order=mode==="region"?[...REG]:DECADES.map(d=>d.k);
+    if(mode==="decade-desc"){ order.reverse(); order.push(order.shift()); } // 待查放最後
+    order.forEach(k=>{
+      const part=rows.filter(v=>keyOf(v)===k); if(!part.length) return;
+      part.sort(mode==="region"?((a,b)=>decIdx(a.d)-decIdx(b.d)||a.y-b.y):((a,b)=>a.y-b.y||REG.indexOf(a.r)-REG.indexOf(b.r)||byTitle(a,b)));
+      html+=`<div class="sec">${mode==="region"?regName(k):decName(k)}<span>${part.length} 支</span></div>`+part.map(card).join("");
+    });
+  }
+  listEl.innerHTML=html;
+}
+
+$("lucky").onclick=()=>{
+  const rows=V.filter(matches); if(!rows.length) return;
+  const v=rows[Math.floor(Math.random()*rows.length)];
+  const el=listEl.querySelector(`[data-u="${v.u}"]`); if(!el) return;
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+};
+const tgl=$("filtertoggle"), fl=$("filters");
+tgl.onclick=()=>{ fl.classList.toggle("hidden"); const open=!fl.classList.contains("hidden"); tgl.classList.toggle("open",open); tgl.setAttribute("aria-expanded",open); };
+qEl.addEventListener("input",render);
+sortEl.addEventListener("change",render);
+$("clear").onclick=()=>{
+  selDec.clear(); sel.forEach(s=>s.clear()); qEl.value=""; pose="";
+  document.querySelectorAll(".tag.on,.dec.on").forEach(b=>{b.classList.remove("on");b.setAttribute("aria-pressed","false");});
+  document.querySelectorAll(".pbtn").forEach(x=>{const on=x.dataset.p==="";x.classList.toggle("on",on);x.setAttribute("aria-pressed",on);});
+  render();
+};
+
+const chc={}; V.forEach(v=>chc[v.c]=(chc[v.c]||0)+1);
+$("chlist").textContent="各頻道收錄數："+Object.entries(chc).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`${c}（${n}）`).join("、")+"。";
+render();
+</script>
+</body>
+</html>
