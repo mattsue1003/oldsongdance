@@ -24,7 +24,8 @@ for k,v in M.items():
 for k in pool:
     seen=set(); pool[k]=[c for c in pool[k] if not(c['u'] in seen or seen.add(c['u']))]
 from qfilter import check
-for k in pool: pool[k]=[c for c in pool[k] if check(c['u'],k) is None]
+from qfilter import ZKEEP
+for k in pool: pool[k]=[c for c in pool[k] if check(c['u'],k) is None and ('曾小貞' not in c['ch'] or c['u'] in ZKEEP)]
 songs=sorted(k for k in pool if pool[k])
 TARGET=int(__import__("sys").argv[1]) if len(__import__("sys").argv)>1 else 400
 CAP={TW:0.24,MAX:0.15}; OTHER=0.10

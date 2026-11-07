@@ -9,7 +9,8 @@ for l in open('quality.tsv'):
     try: s=min(int(h),int(w))
     except: s=0
     Q[u]=dict(short=s,title=t)
-BL=set(['c4mKvsQUtS8', 'G2ewHwi5qYY'])
+BL=set(['c4mKvsQUtS8', 'G2ewHwi5qYY'])|set(json.load(open('visual_bad.json')))
+ZKEEP=set(json.load(open('zeng_keep.json')))
 PERF=re.compile(r'展演|舞蹈秀|舞蹈隊|舞蹈團|團康|才藝|表演')
 def check(u,song):
     if u in BL: return 'blacklist'
