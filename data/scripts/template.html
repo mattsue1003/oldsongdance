@@ -148,7 +148,7 @@
         <input id="q" class="search" type="search" placeholder="搜尋歌名、歌手、頻道" aria-label="搜尋歌名、歌手或頻道">
         <button class="lucky" id="lucky" type="button" title="從目前篩選結果隨機挑一首">隨機一首</button>
       </div>
-      <button class="filtertoggle" id="filtertoggle" type="button" aria-expanded="false"><span>更多篩選：語言・類型・道具・頻道</span><span class="badge" id="selbadge" style="display:none">0</span><span class="arrow">▾</span></button>
+      <button class="filtertoggle" id="filtertoggle" type="button" aria-expanded="false"><span>更多篩選：語言・類型・頻道</span><span class="badge" id="selbadge" style="display:none">0</span><span class="arrow">▾</span></button>
       <div class="filtergroups hidden" id="filters"></div>
     </div>
   </div>
@@ -172,7 +172,7 @@
   <footer class="credits">
     <h2>資料來源與致謝</h2>
     <p>本資料庫收錄的影片皆為 YouTube 上公開分享的長輩律動、椅子舞、健康操影片，來自台灣三十個頻道的老師與團隊，包括
-      <a href="https://www.youtube.com/channel/UC-_VYcrB2WUzrP3Lx2eXP8w" target="_blank" rel="noopener"><strong>「長照2.0銀髮族健康促進」</strong></a>（黃鈺媄、葉嘉淇老師）、「健康2.0 挖健康 Max 老師」、冰冰老師、曾小貞健康操、謝美惠樂齡運動舞蹈、Gina Peng、林秀霞老師、鄭芳枝老師、愛運動美芝、林維茜老師等社區據點與樂齡課程。為了讓內容多元，單一頻道最多占四分之一，同一首歌最多收兩支（坐姿、站姿各一）。
+      <a href="https://www.youtube.com/channel/UC-_VYcrB2WUzrP3Lx2eXP8w" target="_blank" rel="noopener"><strong>「長照2.0銀髮族健康促進」</strong></a>（黃鈺媄、葉嘉淇老師）、「健康2.0 挖健康 Max 老師」、冰冰老師、曾小貞健康操、謝美惠樂齡運動舞蹈、Gina Peng、林秀霞老師、鄭芳枝老師、愛運動美芝、林維茜老師等社區據點與樂齡課程。為了讓內容多元，單一頻道最多占四分之一，同一首歌最多收兩支（坐姿、站姿各一）。只收不用道具、不用樂器的純律動影片，畫質過低（480p 以下）的影片不收。
       感謝各位老師與團隊長期無償製作、分享這麼多適合長輩的影片，讓阿公阿嬤、照顧者與社區據點都能免費跟著動起來。本資料庫僅作整理彙編、方便查找之用，著作權與一切心血歸原頻道所有。</p>
     <p class="other" id="chlist"></p>
     <p class="other">歌曲年份為原曲首次發行或走紅的年份，翻唱、改編以原曲為準；「民謠・童謠」為 1930 年以前或年代不可考的傳統歌謠；「年代待查」是目前查不到可靠出處的歌曲。若有誤植，或原作者不希望被收錄，請告知，將立即修正或移除。</p>
@@ -201,7 +201,6 @@ const chOf=v=>MAJOR.includes(v.c)?v.c:"其他頻道";
 const GROUPS=[
   {key:"r",label:"語言",tags:["華台語","外語"]},
   {key:"g",label:"類型",tags:["有氧","肌力","伸展","帶動跳","椅子舞","動腦"]},
-  {key:"g",label:"道具",tags:["無道具","有道具"]},
   {key:"ch",label:"頻道",tags:[...MAJOR,"其他頻道"]},
   {key:"n",label:"收錄",tags:["本次新增"]}
 ];

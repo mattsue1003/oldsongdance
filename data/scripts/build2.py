@@ -11,7 +11,6 @@ CHN={'🌹Anny Chi🌹':'Anny Chi 紀念恩（樂活音樂趣）','asy8088':'員
 FOREIGN_CJK={'江南style'}
 def tags(T,p):
     g=[p]
-    g.append('有道具' if re.search(r'彈力|啞鈴|毛巾|絲巾|斗笠|扇|棍|球|鈴|彩帶|彩棒|鼓|杯子|傘|dumbbell|band|ball',T,re.I) else '無道具')
     if re.search(r'伸展|拉筋|舒緩|yoga|stretch',T,re.I): g.append('伸展')
     if re.search(r'肌力|肌耐力|彈力帶|啞鈴|dumbbell|核心|腹肌|深蹲|瘦手臂|大腿',T,re.I): g.append('肌力')
     if re.search(r'帶動跳|廣場舞|帶動唱|排舞',T): g.append('帶動跳')
@@ -21,7 +20,7 @@ def tags(T,p):
 out=[]
 for p in P:
     s=p['song']
-    if p['old'] and p['g']: g=p['g']; t=p['title']
+    if p['old'] and p['g']: g=[x for x in p['g'] if x not in('無道具','有道具')]; t=p['title']
     else: g=tags(p['yt'],p['p']); t=s
     foreign=(not re.search(r'[\u4e00-\u9fff]',s)) or s in FOREIGN_CJK or p['r']=='歐美'
     y=Y.get(s); y=-1 if y is None else y

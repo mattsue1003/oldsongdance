@@ -13,8 +13,9 @@ Y.pop('冬天裡的一把火＋熱情的沙漠',None)
 EXTRA=json.load(open('extra_years.json')) if __import__('os').path.exists('extra_years.json') else {}
 Y.update({k:v[0] for k,v in EXTRA.items()})
 json.dump(Y,open('Y_all.json','w'),ensure_ascii=False)
-def n(s): return re.sub(r'[\s\W_]+','',s.lower().replace('拚','拼').replace('癡','痴').replace('臺','台').replace('洒','灑'))
-keys=sorted(Y,key=lambda k:-len(n(k)))
+KEYS=set(Y)|set(json.load(open('names_add.json')))
+def n(s): return re.sub(r'[\s\W_]+','',s.lower().replace('拚','拼').replace('癡','痴').replace('臺','台').replace('洒','灑').replace('田僑仔','田橋仔').replace('梢','稍').replace('按靚','安靚').replace('一朵花','一蕊花').replace('丟丟銅仔','丟丟銅'))
+keys=sorted(KEYS,key=lambda k:-len(n(k)))
 EX=re.compile(r'律動|操|舞|運動|有氧|帶動|椅子|據點|樂齡|健康|銀髮|長者|長輩|暖身|伸展|zumba|dance|fitness|文健站|日照|長照|音樂療育|音樂輔療|節奏|體適能|workout|aerobic|彈力|毛巾|手指|手語',re.I)
 BAD=re.compile(r'舞會|舞孃|真心之夜|鍵盤|表揚|AMARTE|烏克麗麗|陶笛|吹奏|彈唱|合奏|演奏|薩克斯|口琴|鋼琴|吉他|二胡|直播|講座|比賽|決賽|初賽|複賽|競賽|成果|發表會|表演|婚禮|演出|晚會|尾牙|運動會|幼兒|兒童|小朋友|國小|幼稚園|親子|教學分解|分解動作|卡拉|KTV|伴唱|MV|合輯|串燒|組曲|聯唱|日翻中|學日語|英語學唱',re.I)
 files=json.load(open('ch_files.json')); files['長照2.0銀髮族健康促進']='ch_tw.tsv'; files['健康2.0【挖健康】Max老師']='ch_max.tsv'
