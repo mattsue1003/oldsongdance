@@ -1,340 +1,613 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>老歌律動影片資料庫（150首）</title>
+<title>音樂律動影片資料庫（綜合版）</title>
+<meta name="description" content="291 支長輩可跟著做的音樂律動影片：坐姿律動、站姿律動，台語老歌、國語金曲、流行歌、日本昭和名曲、歐美經典，依年代篩選。">
 <style>
-  :root{--accent:#e07b39;--accent2:#c4641f;--bg:#fbf7f2;--card:#fff;--line:#ece3d8;--text:#2b2b2b;--muted:#8a7f73;}
+  :root{
+    --sky1:#7cc8f8;--sky2:#bfe6ff;--sky3:#eef8ff;
+    --blue:#1f7fd6;--blue2:#145fa6;--ink:#17324d;--muted:#5b7389;--line:#d6e9f8;--card:#fff;
+    --sun:#ffc23d;--sun2:#f5a300;
+    --sit:#11a88a;--sitbg:#e2f7f1;--stand:#ff7a4d;--standbg:#fff0e9;
+  }
   *{box-sizing:border-box;}
-  body{font-family:"PingFang TC","Microsoft JhengHei",sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.5;}
-  header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 20px;position:sticky;top:0;z-index:10;}
-  h1{font-size:22px;margin:0 0 2px;}
-  .desc{font-size:13px;color:var(--muted);}
-  .wrap{max-width:1000px;margin:0 auto;padding:0 16px;}
-  .controls{max-width:1000px;margin:14px auto 0;padding:0 16px;}
-  .search{width:100%;font-size:17px;padding:12px 14px;border:2px solid var(--line);border-radius:10px;outline:none;}
-  .search:focus{border-color:var(--accent);}
-  .filtertoggle{margin-top:10px;display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:9px 13px;cursor:pointer;font-size:14px;font-weight:700;color:var(--accent2);user-select:none;width:100%;}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;margin:0;color:var(--ink);line-height:1.5;
+    background:linear-gradient(180deg,var(--sky1) 0,var(--sky2) 360px,var(--sky3) 760px,var(--sky3) 100%);background-color:var(--sky3);min-height:100vh;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px;position:relative;z-index:1;}
+
+  /* 天空與雲 */
+  .sky{position:relative;overflow:hidden;overflow:clip;padding:26px 0 18px;}
+  .cloud{position:absolute;background:#fff;border-radius:999px;opacity:.92;pointer-events:none;}
+  .cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%;}
+  .cloud::before{width:55%;height:180%;left:14%;bottom:20%;}
+  .cloud::after{width:40%;height:140%;right:12%;bottom:25%;}
+  .c1{width:150px;height:40px;top:34px;right:6%;animation:drift 38s linear infinite alternate;}
+  .c2{width:96px;height:28px;top:118px;right:4%;opacity:.75;animation:drift 30s linear infinite alternate-reverse;}
+  .c3{width:120px;height:34px;top:14px;left:-30px;opacity:.8;animation:drift 44s linear infinite alternate;}
+  .sun{position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#fff6c9 0,#ffe27a 45%,rgba(255,226,122,0) 70%);pointer-events:none;}
+  @media(max-width:679px){.c1{top:-14px;right:-30px}.c2{display:none}}
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-60px)}}
+  @media (prefers-reduced-motion:reduce){.cloud{animation:none}}
+
+  h1{font-size:30px;margin:0;color:#fff;letter-spacing:1px;text-shadow:0 2px 0 rgba(20,95,166,.35);position:relative;}
+  h1 small{font-size:15px;font-weight:700;color:var(--blue2);background:var(--sun);border-radius:999px;padding:3px 12px;margin-left:10px;vertical-align:middle;text-shadow:none;}
+  .desc{font-size:15px;color:#fff;margin-top:4px;position:relative;text-shadow:0 1px 2px rgba(20,95,166,.35);}
+  @media(max-width:679px){h1{font-size:25px}.desc{font-size:14px}}
+
+  .panel{background:rgba(255,255,255,.96);border-radius:20px;box-shadow:0 8px 24px rgba(31,127,214,.14);padding:16px 16px 14px;margin-top:16px;position:relative;}
+
+  /* 坐姿／站姿 大分類 */
+  .pose{display:grid;grid-template-columns:1fr 1.4fr 1.4fr;gap:10px;}
+  .pbtn{border:2.5px solid var(--line);background:#fff;border-radius:16px;padding:10px 8px;cursor:pointer;font-family:inherit;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .12s;}
+  .pbtn:hover{transform:translateY(-2px);}
+  .pbtn svg{flex:none;width:34px;height:34px;}
+  .pbtn .pt{font-size:19px;font-weight:800;line-height:1.15;text-align:left;}
+  .pbtn .pt i{display:block;font-style:normal;font-size:12.5px;font-weight:500;color:var(--muted);}
+  .pbtn.all.on{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .pbtn.sit{border-color:#bfeadf;} .pbtn.sit.on{background:var(--sit);border-color:var(--sit);color:#fff;}
+  .pbtn.stand{border-color:#ffd6c6;} .pbtn.stand.on{background:var(--stand);border-color:var(--stand);color:#fff;}
+  .pbtn.on .pt i{color:rgba(255,255,255,.9);}
+  .pbtn.on svg *{stroke:#fff;}
+  @media(max-width:679px){.pose{grid-template-columns:1fr 1fr;}.pbtn.all{grid-column:1/-1;padding:7px;}.pbtn .pt{font-size:17px}.pbtn svg{width:28px;height:28px}}
+
+  /* 年代 */
+  .era-title{font-size:15px;font-weight:800;color:var(--blue2);margin:16px 0 8px;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;}
+  .era-title span{font-weight:400;color:var(--muted);font-size:12.5px;}
+  .timeline{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;align-items:end;}
+  .dec{border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 2px 5px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit;color:inherit;}
+  .dec:hover{border-color:var(--blue);}
+  .dec .bar{width:60%;background:linear-gradient(180deg,#9fd3fb,#5fb2f2);border-radius:5px 5px 2px 2px;min-height:4px;}
+  .dec .lab{font-size:14px;font-weight:800;line-height:1.1;}
+  .dec .lab i{font-style:normal;font-size:10.5px;font-weight:500;display:block;color:var(--muted);}
+  .dec .n{font-size:11px;color:var(--muted);}
+  .dec.on{background:var(--sun);border-color:var(--sun2);}
+  .dec.on .bar{background:#fff;}
+  @media(max-width:679px){.timeline{grid-template-columns:repeat(6,1fr);}.dec .bar{display:none;}}
+
+  .searchrow{display:flex;gap:8px;margin-top:14px;}
+  .search{flex:1;min-width:0;font-size:17px;padding:11px 16px;border:2px solid var(--line);border-radius:999px;outline:none;background:#f7fbff;font-family:inherit;color:var(--ink);}
+  .search:focus{border-color:var(--blue);background:#fff;}
+  .lucky{flex:none;font-size:15px;font-weight:800;padding:0 18px;border-radius:999px;border:none;background:var(--sun);color:var(--ink);cursor:pointer;font-family:inherit;box-shadow:0 3px 0 var(--sun2);}
+  .lucky:active{transform:translateY(2px);box-shadow:0 1px 0 var(--sun2);}
+  .filtertoggle{margin-top:10px;display:flex;align-items:center;gap:8px;background:#f2f8fe;border:none;border-radius:12px;padding:9px 14px;cursor:pointer;font-size:14px;font-weight:700;color:var(--blue2);width:100%;font-family:inherit;}
   .filtertoggle .arrow{margin-left:auto;transition:transform .2s;}
   .filtertoggle.open .arrow{transform:rotate(180deg);}
-  .filtertoggle .badge{background:var(--accent);color:#fff;border-radius:999px;font-size:12px;padding:1px 8px;font-weight:700;}
+  .filtertoggle .badge{background:var(--blue);color:#fff;border-radius:999px;font-size:12px;padding:1px 8px;}
   .filtergroups{margin-top:10px;}
   .filtergroups.hidden{display:none;}
   .group{margin-bottom:8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
   .glabel{font-size:13px;color:var(--muted);min-width:46px;font-weight:700;}
-  .tag{font-size:14px;padding:6px 13px;border:1.5px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;user-select:none;}
-  @media(max-width:679px){
-    .tag{font-size:13px;padding:5px 11px;}
-    .group{margin-bottom:6px;gap:5px;}
-    .glabel{min-width:38px;font-size:12px;}
-  }
-  .tag:hover{border-color:var(--accent);}
-  .tag.on{background:var(--accent);color:#fff;border-color:var(--accent);}
-  .tag.region.on{background:#b25e22;border-color:#b25e22;}
-  .bar{display:flex;justify-content:space-between;align-items:center;margin:14px 0 6px;}
-  .count{font-size:14px;color:var(--muted);}
-  .clear{font-size:13px;color:var(--accent2);cursor:pointer;background:none;border:none;}
-  .list{display:grid;grid-template-columns:1fr;gap:10px;padding-bottom:40px;}
+  .tag{font-size:14px;padding:5px 13px;border:2px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;font-family:inherit;color:inherit;}
+  .tag:hover{border-color:var(--blue);}
+  .tag.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+  .tag .k{font-size:11.5px;opacity:.65;margin-left:3px;}
+  @media(max-width:679px){.tag{font-size:13px;padding:4px 10px;}.glabel{min-width:38px;font-size:12px;}}
+
+  .bar2{display:flex;justify-content:space-between;align-items:center;margin:16px 0 8px;gap:10px;flex-wrap:wrap;}
+  .count{font-size:15px;color:var(--muted);}
+  .count b{color:var(--blue2);font-size:18px;}
+  .right{display:flex;align-items:center;gap:10px;}
+  .sort{font-size:14px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;background:#fff;font-family:inherit;color:inherit;}
+  .clear{font-size:14px;color:var(--blue);cursor:pointer;background:none;border:none;font-family:inherit;font-weight:700;}
+
+  .list{display:grid;grid-template-columns:1fr;gap:12px;padding-bottom:30px;}
   @media(min-width:680px){.list{grid-template-columns:1fr 1fr;}}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
-  .ctitle{font-size:18px;font-weight:700;}
+  @media(min-width:980px){.list{grid-template-columns:1fr 1fr 1fr;}}
+  .sec{grid-column:1/-1;font-size:18px;font-weight:800;color:var(--blue2);margin:12px 0 0;display:flex;align-items:center;gap:10px;}
+  .sec::after{content:"";flex:1;height:3px;border-radius:3px;background:linear-gradient(90deg,#9fd3fb,rgba(159,211,251,0));}
+  .sec span{font-size:13px;font-weight:500;color:var(--muted);}
+  .card{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 3px 12px rgba(31,127,214,.09);border-top:5px solid var(--line);}
+  .card.sit{border-top-color:var(--sit);} .card.stand{border-top-color:var(--stand);}
+  .card.flash{animation:flash 1.8s ease;}
+  @keyframes flash{0%,45%{box-shadow:0 0 0 5px var(--sun);}100%{box-shadow:0 3px 12px rgba(31,127,214,.09);}}
+  .top{display:flex;align-items:flex-start;gap:8px;}
+  .ctitle{font-size:19px;font-weight:800;flex:1;line-height:1.3;}
+  .year{flex:none;font-size:13px;font-weight:800;color:var(--ink);background:var(--sun);border-radius:8px;padding:2px 8px;margin-top:2px;white-space:nowrap;}
+  .year.folk{background:#e3eef8;color:var(--blue2);}
+  .poseb{align-self:flex-start;font-size:13.5px;font-weight:800;border-radius:999px;padding:3px 12px;}
+  .poseb.sit{background:var(--sitbg);color:#0b7f68;} .poseb.stand{background:var(--standbg);color:#d2552a;}
   .meta{font-size:13px;color:var(--muted);}
   .ctags{display:flex;flex-wrap:wrap;gap:5px;}
-  .ct{font-size:12px;padding:2px 9px;border-radius:999px;background:#f4ece2;color:#7a6a58;}
-  .ct.region{background:#fbe6d6;color:#b25e22;font-weight:700;}
-  .play{align-self:flex-start;margin-top:2px;background:var(--accent);color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:15px;font-weight:600;}
-  .play:hover{background:var(--accent2);}
+  .ct{font-size:12px;padding:2px 9px;border-radius:999px;background:#eef5fc;color:#4a6782;}
+  .ct.region{background:#dcefff;color:var(--blue2);font-weight:700;}
+  .ct.new{background:#fff3cf;color:#9a6a00;font-weight:700;}
+  .play{align-self:flex-start;margin-top:auto;background:var(--blue);color:#fff;text-decoration:none;padding:8px 18px;border-radius:999px;font-size:15px;font-weight:700;box-shadow:0 3px 0 var(--blue2);}
+  .play:hover{background:var(--blue2);}
   .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;}
-  .credits{margin:18px 0 50px;padding:20px 22px;background:#fff;border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:12px;}
-  .credits h2{font-size:18px;margin:0 0 10px;color:var(--accent2);}
-  .credits p{font-size:14px;line-height:1.7;color:#4a4036;margin:0 0 8px;}
+  .credits{margin:10px 0 50px;padding:20px 22px;background:#fff;border-radius:16px;box-shadow:0 3px 12px rgba(31,127,214,.09);border-left:6px solid var(--blue);}
+  .credits h2{font-size:18px;margin:0 0 10px;color:var(--blue2);}
+  .credits p{font-size:14px;line-height:1.7;color:#35506a;margin:0 0 8px;}
   .credits p.other{font-size:13px;color:var(--muted);}
-  .credits a{color:var(--accent2);}
+  .credits a{color:var(--blue);}
 </style>
 </head>
 <body>
-<header>
+<div class="sky">
+  <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
   <div class="wrap">
-    <h1>老歌律動影片資料庫</h1>
-    <div class="desc">157 支單曲、無道具、可跟著做的長者運動影片　·　坐著也能動，在家就能練</div>
-    <div class="desc" style="margin-top:4px;color:#b25e22;">🙏 大多數影片來自頻道「長照2.0銀髮族健康促進（黃鈺媄老師）」，特此致謝 ── 詳見頁尾來源說明</div>
-  </div>
-</header>
+    <h1>音樂律動影片資料庫<small>綜合版</small></h1>
+    <div class="desc">291 支長輩可跟著做的律動影片　·　台語老歌、國語金曲、流行歌、客家民謠、日本昭和名曲、歐美經典</div>
 
-<div class="controls">
-  <input id="q" class="search" type="text" placeholder="🔍 搜尋歌名（例如：望春風、甜蜜蜜、Sweet Caroline）">
-  <div class="filtertoggle" id="filtertoggle"><span>🏷️ 篩選標籤</span><span class="badge" id="selbadge" style="display:none">0</span><span class="arrow">▾</span></div>
-  <div class="filtergroups hidden" id="filters"></div>
-  <div class="bar">
-    <span class="count" id="count"></span>
-    <button class="clear" id="clear">✕ 清除篩選</button>
+    <div class="panel">
+      <div class="pose" id="pose">
+        <button class="pbtn all on" data-p="" type="button"><span class="pt">全部<i id="pc-all"></i></span></button>
+        <button class="pbtn sit" data-p="坐姿" type="button">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#11a88a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="7" r="4"/><path d="M17 12v12h10l2 10"/><path d="M17 17l8 3"/><path d="M10 24h10M10 24v12M10 30h12"/></svg>
+          <span class="pt">坐姿律動<i id="pc-sit"></i></span></button>
+        <button class="pbtn stand" data-p="站姿" type="button">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#ff7a4d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="6" r="4"/><path d="M20 11v13"/><path d="M11 13l9 4 9-4"/><path d="M20 24l-6 12M20 24l6 12"/></svg>
+          <span class="pt">站姿律動<i id="pc-stand"></i></span></button>
+      </div>
+
+      <div class="era-title">依歌曲年代找<span>點年代可複選；年份為原曲發行年，約略參考</span></div>
+      <div class="timeline" id="timeline"></div>
+
+      <div class="searchrow">
+        <input id="q" class="search" type="search" placeholder="搜尋歌名、歌手、頻道" aria-label="搜尋歌名、歌手或頻道">
+        <button class="lucky" id="lucky" type="button" title="從目前篩選結果隨機挑一首">隨機一首</button>
+      </div>
+      <button class="filtertoggle" id="filtertoggle" type="button" aria-expanded="false"><span>更多篩選：地區・類型・道具・頻道</span><span class="badge" id="selbadge" style="display:none">0</span><span class="arrow">▾</span></button>
+      <div class="filtergroups hidden" id="filters"></div>
+    </div>
   </div>
 </div>
 
 <div class="wrap">
+  <div class="bar2">
+    <span class="count" id="count"></span>
+    <div class="right">
+      <select class="sort" id="sort" aria-label="排序">
+        <option value="decade">依年代分段（舊→新）</option>
+        <option value="decade-desc">依年代分段（新→舊）</option>
+        <option value="region">依地區分段</option>
+        <option value="title">依歌名</option>
+      </select>
+      <button class="clear" id="clear" type="button">清除篩選</button>
+    </div>
+  </div>
   <div class="list" id="list"></div>
 
   <footer class="credits">
-    <h2>🙏 資料來源與致謝</h2>
-    <p>本資料庫絕大多數影片（157 支中的 135 支）皆來自 YouTube 頻道
-      <a href="https://www.youtube.com/channel/UC-_VYcrB2WUzrP3Lx2eXP8w" target="_blank" rel="noopener"><strong>「長照2.0銀髮族健康促進」（指導老師：黃鈺媄）</strong></a>。
-      感謝黃鈺媄老師與團隊長期無償製作、分享這麼多適合長輩的老歌律動與椅子舞影片，
-      讓阿公阿嬤、照顧者與社區據點都能免費跟著動起來。本資料庫僅作整理彙編、方便查找之用，著作權與一切心血歸原頻道所有。</p>
-    <p class="other">其他來源同表感謝：
-      <a href="https://www.youtube.com/channel/UCVg_m-wgKK6VZqucT0Z8ODA" target="_blank" rel="noopener">悠活健康促進</a>（5 支）、
-      <a href="https://www.youtube.com/channel/UCqY4NjVm8X-jC3fV3Kgx0dg" target="_blank" rel="noopener">葉嘉淇</a>（2 支）、
-      Chair Yoga Dance（13 支）、Senior Dance Fitness（2 支）。</p>
-    <p class="other">若原作者不希望被收錄，請告知，將立即移除。</p>
+    <h2>資料來源與致謝</h2>
+    <p>本資料庫收錄的影片皆為 YouTube 上公開分享的長輩律動、椅子舞、健康操影片，最大宗來自頻道
+      <a href="https://www.youtube.com/channel/UC-_VYcrB2WUzrP3Lx2eXP8w" target="_blank" rel="noopener"><strong>「長照2.0銀髮族健康促進」</strong></a>（指導老師：黃鈺媄、葉嘉淇），其次為「健康2.0 挖健康 Max 老師」。
+      感謝各位老師與團隊長期無償製作、分享這麼多適合長輩的影片，讓阿公阿嬤、照顧者與社區據點都能免費跟著動起來。本資料庫僅作整理彙編、方便查找之用，著作權與一切心血歸原頻道所有。</p>
+    <p class="other" id="chlist"></p>
+    <p class="other">歌曲年份為原曲首次發行或走紅的年份，翻唱、改編以原曲為準；「民謠・童謠」為 1930 年以前或年代不可考的傳統歌謠；「年代待查」是目前查不到可靠出處的歌曲。若有誤植，或原作者不希望被收錄，請告知，將立即修正或移除。</p>
   </footer>
 </div>
 
 <script>
-const TW="長照2.0銀髮族健康促進";
+const TW="長照2.0銀髮族健康促進", MAX="健康2.0【挖健康】Max老師";
+// t 歌名 · r 地區 · c 頻道 · g 標籤（第一個是坐姿／站姿）· u YouTube ID · y 原曲年份（0＝民謠，-1＝待查）· s 原唱 · n 1＝本次新增
 const V = [
-// ===== 台灣（125） =====
-{t:"榕樹下",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"CLHN-NwLH40"},
-{t:"四季紅",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"rMQyeaxjuo8"},
-{t:"望春風",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"VoQOURBz1-0"},
-{t:"田橋仔問西施",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"r8zn87ZC-Tw"},
-{t:"失戀陣線聯盟",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"H03ja0GY1LY"},
-{t:"你著忍耐",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"llouy2ZusQQ"},
-{t:"南都夜曲",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"YYJreMfzF6c"},
-{t:"淚的小花",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"QRM6qe5sbn8"},
-{t:"白牡丹",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"svkDM1lPlJE"},
-{t:"一串心",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"Muq7fUNNzbo"},
-{t:"快樂的出帆（站姿）",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"PzJJkxc7Hks"},
-{t:"再會呀港都",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"k72NFXbI-Yk"},
-{t:"燒肉粽",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"XOlJdJPdqsw"},
-{t:"熱情的沙漠",r:"台灣",c:TW,g:["坐姿","無道具","椅子舞","有氧"],u:"H3O28PKLlWk"},
-{t:"日不落",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"XuTPqVYGE8g"},
-{t:"向前走",r:"台灣",c:TW,g:["坐姿","無道具","肌力","有氧"],u:"bOfu25i4D6I"},
-{t:"往事只能回味",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"5r3uG8kdkZw"},
-{t:"站在高崗上",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"JKMjTCI7G2k"},
-{t:"最後列車",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"O_THP9CndN8"},
-{t:"歡喜乾杯",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"rHkCUWj-i_k"},
-{t:"一剪梅",r:"台灣",c:TW,g:["坐姿","無道具","伸展"],u:"mlRLIo3M5HQ"},
-{t:"十八姑娘一蕊花",r:"台灣",c:TW,g:["坐姿","無道具","椅子舞","有氧"],u:"aBkiD9_6Mrs"},
-{t:"小蘋果",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"Y7j8T_BUzkI"},
-{t:"船頂的歐里桑",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"YRXirVQgjuo"},
-{t:"迎賓舞",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"0F_nzM3kdYA"},
-{t:"練舞功",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"XIVrTm52W3s"},
-{t:"山頂黑狗兄（坐姿）",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"gwrQ4qCjtM4"},
-{t:"向前衝",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"tqCmhUFsstc"},
-{t:"川流不息",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"k6gO4Xtv-z0"},
-{t:"英雄",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"g370GjAjPZU"},
-{t:"童年",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"Zv7UG4xyRGc"},
-{t:"月亮代表我的心",r:"台灣",c:TW,g:["坐姿","無道具","伸展"],u:"hiGXKCFLYzM"},
-{t:"可愛的玫瑰花",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"mbcXDLeZO5o"},
-{t:"一人水一項",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"QToEmeFHfgo"},
-{t:"草螟弄雞公",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"bwwfzQtVU7g"},
-{t:"來去台東",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"HqevVjcPXT4"},
-{t:"愛拼才會贏",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"TqLnGU34ohM"},
-{t:"祝你順風",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"IRIUz5pWIno"},
-{t:"愛情的恰恰",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"eLHoeUPnZmc"},
-{t:"田橋仔問西施（站姿）",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"XJXomXwEJqo"},
-{t:"阿嬤佮阿公",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"dE9biN_fJQQ"},
-{t:"鬼迷心竅",r:"台灣",c:TW,g:["坐姿","無道具","椅子舞","有氧"],u:"fejDGE4MIE4"},
-{t:"米老鼠",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"AKXdj72eXCg"},
-{t:"快樂的出帆（坐姿肌力）",r:"台灣",c:TW,g:["坐姿","無道具","肌力"],u:"oGXNgYgdiqo"},
-{t:"阿爸牽水牛",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"4fcFYvYZ590"},
-{t:"得意的笑",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"kN6TBqVhcYA"},
-{t:"甜蜜蜜",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"3vzcx9qmT8U"},
-{t:"外婆的澎湖灣",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"m_UNZZtIccE"},
-{t:"喜氣洋洋",r:"台灣",c:TW,g:["坐姿","無道具","椅子舞","有氧"],u:"gYoYpKErVY4"},
-{t:"感情隨風去",r:"台灣",c:TW,g:["坐姿","無道具","肌力"],u:"fojpdsOW22s"},
-{t:"那魯灣舞曲",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"NSeZRS0yMmo"},
-{t:"甜蜜的情歌",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"Vmt2M3qk5mA"},
-{t:"美酒加咖啡",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"riX76Fnifcs"},
-{t:"戰馬",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"QJNt7Lf870w"},
-{t:"咱是一家人",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"UEOaMrDDa3g"},
-{t:"天下的媽媽都是一樣的",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"39MF2bymuTQ"},
-{t:"山頂的黑狗兄（站姿）",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"Q2ayIum6WHY"},
-{t:"拜訪春天",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"CdDBEACvsBY"},
-{t:"人生要隨緣",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"LDbsu9j3iQo"},
-{t:"一定贏",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"S3FCW0PYJkA"},
-{t:"酸鳳梨",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"tVYt1783VDY"},
-{t:"重要的事情說三遍",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"xy5Juf9gxZM"},
-{t:"舞女",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"C9YG1BHR0wU"},
-{t:"歌聲滿行囊",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"wWr6kj1nvp8"},
-{t:"六月茉莉",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"4u_oeEf6wJI"},
-{t:"來跳舞",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"sgDDd-1GLoM"},
-{t:"最炫民族風",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"843buGBAwAI"},
-{t:"為你打拼",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"yLGk2-b7JEY"},
-{t:"眼淚一斤重",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"rfw0Pm4Rj_g"},
-{t:"美麗的星期天",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"wa0wTq4rwkM"},
-{t:"我的歌",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"IyZhD7Jj83M"},
-{t:"火火的姑娘",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"neCLPoObxr8"},
-{t:"捉泥鰍",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"8g13o_wbbXE"},
-{t:"愛的路上千萬里",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"ffcOgJIUzc8"},
-{t:"敲敲門",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"Eu_3m5ParDw"},
-{t:"阿娘哈細腰",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"-aFBH44KJ58"},
-{t:"今山古道",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"jWzdh_XLwA4"},
-{t:"飛向你飛向我",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"3of_y3b3FuQ"},
-{t:"哈囉Day",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"ZFvPEbC0lUA"},
-{t:"天涼好個秋",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"pUl5pUpYgFk"},
-{t:"拍手舞（跟阿嬤動一動）",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"5Ov2fYcbPZ4"},
-{t:"感動",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"CMnKZCaAYI0"},
-{t:"贏一口氣",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"WD-G_YOCWlE"},
-{t:"咁按呢",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"oncWO9Jwy5E"},
-{t:"幸福火辣辣",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"pRJZkg4oqJQ"},
-{t:"愛的禮物",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"WBkFEUR-Gzo"},
-{t:"寶島曼波",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"pqzjCm8Myec"},
-{t:"我的歐兜賣",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"mSs83bAQu2Q"},
-{t:"愛情真偉大",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"aBi6nQQPMII"},
-{t:"虎虎生威",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"8NMcjImfscg"},
-{t:"你是我永遠的痛",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"9cmgEj0pT0A"},
-{t:"給我吻一下",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"9twcH2IvQsg"},
-{t:"雁兒在林稍",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"plbeGmb_3L8"},
-{t:"車頂水姑娘",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"Gbrt5ktyDDc"},
-{t:"一手情二手愛",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"NTR6UDXM6TQ"},
-{t:"黑白舞",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"CLqVyJXD7uE"},
-{t:"細妹安靚",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"cByEU1IPXic"},
-{t:"酒醉的月亮",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"fqeqUBvorxk"},
-{t:"動一動",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"IfT1ObWT5eA"},
-{t:"踏浪",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"aH-OWXlRxKk"},
-{t:"阮的愛人哪",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"Xx0HOvrvNG8"},
-{t:"醒來折花",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"ryEePa7ND88"},
-{t:"夕陽伴我歸",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"vppcXl2sHGk"},
-{t:"大家攏吃台灣米",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"Nli4kd000Js"},
-{t:"不是你的終會離開",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"6QHHvuISODk"},
-{t:"最美傷口",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"8FeMXu8GhM0"},
-{t:"百花香",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"-t9H1i5OFlU"},
-{t:"幸福的臉",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"8uVIPOo5Xgo"},
-{t:"人生何處不相逢",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"3UZg-0lsfGk"},
-{t:"假如我是真的",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"WC7pJD4gfkA"},
-{t:"你是我的花朵",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"aoh1z5cq47g"},
-{t:"小草",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"ohdhVmFRqpU"},
-{t:"長相依",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"IXOisRhhwpw"},
-{t:"沒有喝夠",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"3OP40t0Sk_U"},
-{t:"哥要闖一闖",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"KG1hxn6jlJE"},
-{t:"喝的不是酒是感情",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"mWzVmuYOL5k"},
-{t:"來做我的女人願意嗎",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"03Ge2o39Tgo"},
-{t:"你怎麼說",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"xv4z3L5ESXg"},
-{t:"DJ的歌",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"KQusDRXBLQY"},
-{t:"老長壽",r:"台灣",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"femmWMV2WmQ"},
-{t:"陪你去草原看星河",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"Te79WjOsvD0"},
-{t:"我沒有騙你",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"BCkXRimwngw"},
-{t:"情火",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"QtdiVVyrS_g"},
-{t:"情難枕",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"09RVpVMcIJQ"},
-{t:"我和草原一起來唱歌",r:"台灣",c:TW,g:["坐姿","無道具","有氧"],u:"HVA4xx-QIeo"},
-// --- 其他頻道（非長照2.0）---
-{t:"甜蜜蜜（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿","無道具","帶動跳","有氧","其他頻道"],u:"Vn838J_Ncj4"},
-{t:"望春風（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿","無道具","帶動跳","有氧","其他頻道"],u:"PjW4s9v3flk"},
-{t:"四季紅（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿","無道具","帶動跳","有氧","其他頻道"],u:"d1G8Ogt-Jjs"},
-{t:"給我一個吻（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿","無道具","帶動跳","有氧","其他頻道"],u:"WtmsjgJu0eQ"},
-{t:"春風吻上我的臉（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿","無道具","帶動跳","有氧","其他頻道"],u:"gAKqAsgxWNA"},
-{t:"快樂的出帆（葉嘉淇 椅子舞）",r:"台灣",c:"葉嘉淇",g:["坐姿","無道具","椅子舞","有氧","其他頻道"],u:"-BhAXssddv4"},
-{t:"對你愛不完（葉嘉淇 椅子舞）",r:"台灣",c:"葉嘉淇",g:["坐姿","無道具","椅子舞","有氧","其他頻道"],u:"nHuETeFmAQ0"},
-// ===== 日本（10）— 音樂＋律動示範版（非清唱） =====
-{t:"きよしズンドコ節",r:"日本",c:TW,g:["坐姿","無道具","有氧"],u:"YhOuNi5mh0E"},
-{t:"りンゴの唄（蘋果之歌）",r:"日本",c:TW,g:["坐姿","無道具","有氧"],u:"k1UY0iJ9iWw"},
-{t:"あゝ人生に涙あり（水戶黃門）",r:"日本",c:TW,g:["坐姿","無道具","有氧"],u:"v4rIwIEVKTQ"},
-{t:"サザエさん（海螺小姐）",r:"日本",c:TW,g:["坐姿","無道具","有氧"],u:"LpYeC9QtafU"},
-{t:"サザエさん（站姿版）",r:"日本",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"YpmlE6KTY0M"},
-{t:"365歩のマーチ",r:"日本",c:TW,g:["坐姿","無道具","有氧"],u:"I3h555IPIoI"},
-{t:"赤とんぼ（紅蜻蜓）",r:"日本",c:TW,g:["坐姿","無道具","有氧"],u:"P_LuAaacwjk"},
-{t:"さんぽ（龍貓 散步）",r:"日本",c:TW,g:["坐姿","無道具","有氧"],u:"e2-EsL7Njys"},
-{t:"北酒場",r:"日本",c:TW,g:["站姿","無道具","帶動跳","有氧"],u:"g-4gEP6Dckw"},
-{t:"涙そうそう（淚光閃閃）",r:"日本",c:TW,g:["坐姿","無道具","伸展"],u:"KP9DzpSLibU"},
-// ===== 歐美（15）— Chair Dance 椅子舞 =====
-{t:"Sh-Boom (Crew Cuts)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"6Fr5WC592_0"},
-{t:"Personality (Lloyd Price)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"7_ccc2U_Fk4"},
-{t:"Sweet Caroline",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"kv9rfjbjyZ4"},
-{t:"Stayin' Alive (Bee Gees)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"B4j4tPE5J0g"},
-{t:"Sixteen Tons",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"KrdgHtUNzG8"},
-{t:"Twist and Shout",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"NShhvSnClv0"},
-{t:"Mambo Italiano",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"bSXxzbGODw8"},
-{t:"Elvira (Oak Ridge Boys)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"cFkwec2R4Vo"},
-{t:"Night Fever (Bee Gees)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"-AeKzy48LYk"},
-{t:"Delilah (Tom Jones)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"2yAWMbW90Rc"},
-{t:"Blue Moon (The Marcels)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"zVldSZKEMrw"},
-{t:"Jailhouse Rock (Elvis Presley)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"UZWKRiWvxV4"},
-{t:"Rock Around the Clock (Bill Haley)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿","無道具","椅子舞","有氧"],u:"hSUhQw3-SDw"},
-{t:"La Bamba (Ritchie Valens)",r:"歐美",c:"Senior Dance Fitness",g:["站姿","無道具","有氧"],u:"z9wHbALxmhU"},
-{t:"Sway (Michael Bublé)",r:"歐美",c:"Senior Dance Fitness",g:["站姿","無道具","有氧"],u:"eiduLm8XJog"}
+{t:"榕樹下",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"CLHN-NwLH40",y:1979,s:"余天"},
+{t:"四季紅",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"rMQyeaxjuo8",y:1938},
+{t:"望春風",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"VoQOURBz1-0",y:1933},
+{t:"田橋仔問西施",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"r8zn87ZC-Tw",y:-1},
+{t:"失戀陣線聯盟",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"H03ja0GY1LY",y:1994,s:"草蜢"},
+{t:"你著忍耐",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"llouy2ZusQQ",y:1983,s:"江蕙"},
+{t:"南都夜曲",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"YYJreMfzF6c",y:1938},
+{t:"淚的小花",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"QRM6qe5sbn8",y:1969,s:"青山"},
+{t:"白牡丹",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"svkDM1lPlJE",y:1936},
+{t:"一串心",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"Muq7fUNNzbo",y:1981,s:"沈雁"},
+{t:"快樂的出帆（站姿）",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"PzJJkxc7Hks",y:1958,s:"陳芬蘭"},
+{t:"再會呀港都",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"k72NFXbI-Yk",y:-1},
+{t:"燒肉粽",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"XOlJdJPdqsw",y:1949},
+{t:"熱情的沙漠",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"H3O28PKLlWk",y:1974,s:"歐陽菲菲"},
+{t:"日不落",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"XuTPqVYGE8g",y:2007,s:"蔡依林"},
+{t:"向前走",r:"台灣",c:TW,g:["坐姿", "無道具", "肌力", "有氧"],u:"bOfu25i4D6I",y:1990,s:"林強"},
+{t:"往事只能回味",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"5r3uG8kdkZw",y:1970,s:"尤雅"},
+{t:"站在高崗上",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"JKMjTCI7G2k",y:1957,s:"姚莉、楊光"},
+{t:"最後列車",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"O_THP9CndN8",y:-1},
+{t:"歡喜乾杯",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"rHkCUWj-i_k",y:-1},
+{t:"一剪梅",r:"台灣",c:TW,g:["坐姿", "無道具", "伸展"],u:"mlRLIo3M5HQ",y:1983,s:"費玉清"},
+{t:"十八姑娘一蕊花",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"aBkiD9_6Mrs",y:1960,s:"文夏"},
+{t:"小蘋果",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"Y7j8T_BUzkI",y:2014,s:"筷子兄弟"},
+{t:"船頂的歐里桑",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"YRXirVQgjuo",y:-1},
+{t:"迎賓舞",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"0F_nzM3kdYA",y:-1},
+{t:"練舞功",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"XIVrTm52W3s",y:2005,s:"謝金燕"},
+{t:"山頂黑狗兄（坐姿）",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"gwrQ4qCjtM4",y:1957,s:"洪一峰"},
+{t:"向前衝",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"tqCmhUFsstc",y:-1},
+{t:"川流不息",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"k6gO4Xtv-z0",y:-1},
+{t:"英雄",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"g370GjAjPZU",y:-1},
+{t:"童年",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"Zv7UG4xyRGc",y:1982,s:"羅大佑"},
+{t:"月亮代表我的心",r:"台灣",c:TW,g:["坐姿", "無道具", "伸展"],u:"hiGXKCFLYzM",y:1973,s:"鄧麗君"},
+{t:"可愛的玫瑰花",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"mbcXDLeZO5o",y:-1},
+{t:"一人水一項",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"QToEmeFHfgo",y:2015,s:"Selina、蕭煌奇"},
+{t:"草螟弄雞公",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"bwwfzQtVU7g",y:0},
+{t:"來去台東",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"HqevVjcPXT4",y:1992,s:"沈文程"},
+{t:"愛拼才會贏",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"TqLnGU34ohM",y:1988,s:"葉啟田"},
+{t:"祝你順風",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"IRIUz5pWIno",y:-1},
+{t:"愛情的恰恰",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"eLHoeUPnZmc",y:1992,s:"陳小雲"},
+{t:"田橋仔問西施（站姿）",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"XJXomXwEJqo",y:-1},
+{t:"阿嬤佮阿公",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"dE9biN_fJQQ",y:-1},
+{t:"鬼迷心竅",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"fejDGE4MIE4",y:1992,s:"李宗盛"},
+{t:"米老鼠",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"AKXdj72eXCg",y:-1},
+{t:"快樂的出帆（坐姿肌力）",r:"台灣",c:TW,g:["坐姿", "無道具", "肌力"],u:"oGXNgYgdiqo",y:1958,s:"陳芬蘭"},
+{t:"阿爸牽水牛",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"4fcFYvYZ590",y:-1},
+{t:"得意的笑",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"kN6TBqVhcYA",y:1980,s:"李麗芬"},
+{t:"甜蜜蜜",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"3vzcx9qmT8U",y:1979,s:"鄧麗君"},
+{t:"外婆的澎湖灣",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"m_UNZZtIccE",y:1979,s:"潘安邦"},
+{t:"喜氣洋洋",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"gYoYpKErVY4",y:1976,s:"劉文正"},
+{t:"感情隨風去",r:"台灣",c:TW,g:["坐姿", "無道具", "肌力"],u:"fojpdsOW22s",y:-1},
+{t:"那魯灣舞曲",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"NSeZRS0yMmo",y:-1},
+{t:"甜蜜的情歌",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"Vmt2M3qk5mA",y:2005,s:"陳思安"},
+{t:"美酒加咖啡",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"riX76Fnifcs",y:1973,s:"鄧麗君"},
+{t:"戰馬",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"QJNt7Lf870w",y:-1},
+{t:"咱是一家人",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"UEOaMrDDa3g",y:2017,s:"蔡義德"},
+{t:"天下的媽媽都是一樣的",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"39MF2bymuTQ",y:-1},
+{t:"山頂的黑狗兄（站姿）",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"Q2ayIum6WHY",y:1957,s:"洪一峰"},
+{t:"拜訪春天",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"CdDBEACvsBY",y:1981,s:"施孝榮"},
+{t:"人生要隨緣",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"LDbsu9j3iQo",y:-1},
+{t:"一定贏",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"S3FCW0PYJkA",y:-1},
+{t:"酸鳳梨",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"tVYt1783VDY",y:2017,s:"黃思婷"},
+{t:"重要的事情說三遍",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"xy5Juf9gxZM",y:-1},
+{t:"舞女",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"C9YG1BHR0wU",y:1987,s:"陳小雲"},
+{t:"歌聲滿行囊",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"wWr6kj1nvp8",y:1979,s:"楊芳儀"},
+{t:"六月茉莉",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"4u_oeEf6wJI",y:1959,s:"許石"},
+{t:"來跳舞",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"sgDDd-1GLoM",y:-1},
+{t:"最炫民族風",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"843buGBAwAI",y:2009,s:"鳳凰傳奇"},
+{t:"為你打拼",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"yLGk2-b7JEY",y:-1},
+{t:"眼淚一斤重",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"rfw0Pm4Rj_g",y:2022,s:"楊哲"},
+{t:"美麗的星期天",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"wa0wTq4rwkM",y:1972},
+{t:"我的歌",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"IyZhD7Jj83M",y:-1},
+{t:"火火的姑娘",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"neCLPoObxr8",y:2013,s:"東方紅艷"},
+{t:"捉泥鰍",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"8g13o_wbbXE",y:1982,s:"包美聖"},
+{t:"愛的路上千萬里",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"ffcOgJIUzc8",y:1977,s:"龍飄飄"},
+{t:"敲敲門",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"Eu_3m5ParDw",y:1974,s:"鳳飛飛"},
+{t:"阿娘哈細腰",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"-aFBH44KJ58",y:-1},
+{t:"今山古道",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"jWzdh_XLwA4",y:1980,s:"黃大城"},
+{t:"飛向你飛向我",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"3of_y3b3FuQ",y:1982,s:"金瑞瑤"},
+{t:"哈囉Day",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"ZFvPEbC0lUA",y:-1},
+{t:"天涼好個秋",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"pUl5pUpYgFk",y:1980,s:"鮑正芳"},
+{t:"拍手舞（跟阿嬤動一動）",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"5Ov2fYcbPZ4",y:-1},
+{t:"感動",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"CMnKZCaAYI0",y:-1},
+{t:"贏一口氣",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"WD-G_YOCWlE",y:2024,s:"張秀卿"},
+{t:"咁按呢",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"oncWO9Jwy5E",y:-1},
+{t:"幸福火辣辣",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"pRJZkg4oqJQ",y:-1},
+{t:"愛的禮物",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"WBkFEUR-Gzo",y:-1},
+{t:"寶島曼波",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"pqzjCm8Myec",y:1960,s:"洪一峰"},
+{t:"我的歐兜賣",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"mSs83bAQu2Q",y:-1},
+{t:"愛情真偉大",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"aBi6nQQPMII",y:-1},
+{t:"虎虎生威",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"8NMcjImfscg",y:-1},
+{t:"你是我永遠的痛",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"9cmgEj0pT0A",y:-1},
+{t:"給我吻一下",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"9twcH2IvQsg",y:-1},
+{t:"雁兒在林稍",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"plbeGmb_3L8",y:1980,s:"鳳飛飛"},
+{t:"車頂水姑娘",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"Gbrt5ktyDDc",y:-1},
+{t:"一手情二手愛",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"NTR6UDXM6TQ",y:-1},
+{t:"黑白舞",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"CLqVyJXD7uE",y:-1},
+{t:"細妹安靚",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"cByEU1IPXic",y:2003,s:"羅時豐"},
+{t:"酒醉的月亮",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"fqeqUBvorxk",y:-1},
+{t:"動一動",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"IfT1ObWT5eA",y:-1},
+{t:"踏浪",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"aH-OWXlRxKk",y:1978,s:"沈雁"},
+{t:"阮的愛人哪",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"Xx0HOvrvNG8",y:-1},
+{t:"醒來折花",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"ryEePa7ND88",y:-1},
+{t:"夕陽伴我歸",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"vppcXl2sHGk",y:1982,s:"陳淑樺"},
+{t:"大家攏吃台灣米",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"Nli4kd000Js",y:-1},
+{t:"不是你的終會離開",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"6QHHvuISODk",y:-1},
+{t:"最美傷口",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"8FeMXu8GhM0",y:-1},
+{t:"百花香",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"-t9H1i5OFlU",y:-1},
+{t:"幸福的臉",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"8uVIPOo5Xgo",y:-1},
+{t:"人生何處不相逢",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"3UZg-0lsfGk",y:1989,s:"陳慧嫻"},
+{t:"假如我是真的",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"WC7pJD4gfkA",y:1981,s:"鄧麗君"},
+{t:"你是我的花朵",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"aoh1z5cq47g",y:1996,s:"伍佰"},
+{t:"小草",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"ohdhVmFRqpU",y:1979,s:"王夢麟"},
+{t:"長相依",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"IXOisRhhwpw",y:-1},
+{t:"沒有喝夠",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"3OP40t0Sk_U",y:2019,s:"門小強"},
+{t:"哥要闖一闖",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"KG1hxn6jlJE",y:-1},
+{t:"喝的不是酒是感情",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"mWzVmuYOL5k",y:2019,s:"秋褲大叔"},
+{t:"來做我的女人願意嗎",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"03Ge2o39Tgo",y:-1},
+{t:"你怎麼說",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"xv4z3L5ESXg",y:1980,s:"鄧麗君"},
+{t:"DJ的歌",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"KQusDRXBLQY",y:-1},
+{t:"老長壽",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"femmWMV2WmQ",y:-1},
+{t:"陪你去草原看星河",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"Te79WjOsvD0",y:-1},
+{t:"我沒有騙你",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"BCkXRimwngw",y:1971},
+{t:"情火",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"QtdiVVyrS_g",y:-1},
+{t:"情難枕",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"09RVpVMcIJQ",y:1993,s:"林慧萍"},
+{t:"我和草原一起來唱歌",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"HVA4xx-QIeo",y:-1},
+{t:"甜蜜蜜（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿", "無道具", "帶動跳", "有氧", "其他頻道"],u:"Vn838J_Ncj4",y:1979,s:"鄧麗君"},
+{t:"望春風（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿", "無道具", "帶動跳", "有氧", "其他頻道"],u:"PjW4s9v3flk",y:1933},
+{t:"四季紅（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿", "無道具", "帶動跳", "有氧", "其他頻道"],u:"d1G8Ogt-Jjs",y:1938},
+{t:"給我一個吻（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿", "無道具", "帶動跳", "有氧", "其他頻道"],u:"WtmsjgJu0eQ",y:1958,s:"張露"},
+{t:"春風吻上我的臉（悠活）",r:"台灣",c:"悠活健康促進",g:["站姿", "無道具", "帶動跳", "有氧", "其他頻道"],u:"gAKqAsgxWNA",y:1956,s:"姚莉"},
+{t:"快樂的出帆（葉嘉淇 椅子舞）",r:"台灣",c:"葉嘉淇",g:["坐姿", "無道具", "椅子舞", "有氧", "其他頻道"],u:"-BhAXssddv4",y:1958,s:"陳芬蘭"},
+{t:"對你愛不完（葉嘉淇 椅子舞）",r:"台灣",c:"葉嘉淇",g:["坐姿", "無道具", "椅子舞", "有氧", "其他頻道"],u:"nHuETeFmAQ0",y:1990,s:"郭富城"},
+{t:"きよしズンドコ節",r:"日本",c:TW,g:["坐姿", "無道具", "有氧"],u:"YhOuNi5mh0E",y:2002,s:"氷川きよし"},
+{t:"りンゴの唄（蘋果之歌）",r:"日本",c:TW,g:["坐姿", "無道具", "有氧"],u:"k1UY0iJ9iWw",y:1945},
+{t:"あゝ人生に涙あり（水戶黃門）",r:"日本",c:TW,g:["坐姿", "無道具", "有氧"],u:"v4rIwIEVKTQ",y:1969},
+{t:"サザエさん（海螺小姐）",r:"日本",c:TW,g:["坐姿", "無道具", "有氧"],u:"LpYeC9QtafU",y:1969},
+{t:"サザエさん（站姿版）",r:"日本",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"YpmlE6KTY0M",y:1969},
+{t:"365歩のマーチ",r:"日本",c:TW,g:["坐姿", "無道具", "有氧"],u:"I3h555IPIoI",y:1968,s:"水前寺清子"},
+{t:"赤とんぼ（紅蜻蜓）",r:"日本",c:TW,g:["坐姿", "無道具", "有氧"],u:"P_LuAaacwjk",y:1927},
+{t:"さんぽ（龍貓 散步）",r:"日本",c:TW,g:["坐姿", "無道具", "有氧"],u:"e2-EsL7Njys",y:1988},
+{t:"北酒場",r:"日本",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"g-4gEP6Dckw",y:1982,s:"細川たかし"},
+{t:"涙そうそう（淚光閃閃）",r:"日本",c:TW,g:["坐姿", "無道具", "伸展"],u:"KP9DzpSLibU",y:1998,s:"森山良子・夏川りみ"},
+{t:"Sh-Boom (Crew Cuts)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"6Fr5WC592_0",y:1954},
+{t:"Personality (Lloyd Price)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"7_ccc2U_Fk4",y:1959},
+{t:"Sweet Caroline",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"kv9rfjbjyZ4",y:1969,s:"Neil Diamond"},
+{t:"Stayin' Alive (Bee Gees)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"B4j4tPE5J0g",y:1977},
+{t:"Sixteen Tons",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"KrdgHtUNzG8",y:1955},
+{t:"Twist and Shout",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"NShhvSnClv0",y:1962},
+{t:"Mambo Italiano",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"bSXxzbGODw8",y:1954},
+{t:"Elvira (Oak Ridge Boys)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"cFkwec2R4Vo",y:1981},
+{t:"Night Fever (Bee Gees)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"-AeKzy48LYk",y:1977},
+{t:"Delilah (Tom Jones)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"2yAWMbW90Rc",y:1968},
+{t:"Blue Moon (The Marcels)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"zVldSZKEMrw",y:1961},
+{t:"Jailhouse Rock (Elvis Presley)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"UZWKRiWvxV4",y:1957},
+{t:"Rock Around the Clock (Bill Haley)",r:"歐美",c:"Chair Yoga Dance",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"hSUhQw3-SDw",y:1954},
+{t:"La Bamba (Ritchie Valens)",r:"歐美",c:"Senior Dance Fitness",g:["站姿", "無道具", "有氧"],u:"z9wHbALxmhU",y:1958},
+{t:"Sway (Michael Bublé)",r:"歐美",c:"Senior Dance Fitness",g:["站姿", "無道具", "有氧"],u:"eiduLm8XJog",y:1954},
+{t:"那不是雪中紅",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"2ICbNVFg0q8",y:2011,s:"JPM",n:1},
+{t:"心花開",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"BjCrC3XIaJk",y:2011,s:"李千娜",n:1},
+{t:"得意的笑",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧", "核心肌力"],u:"DN2rOAh9xqI",y:1980,s:"李麗芬",n:1},
+{t:"海草舞",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"pNvTqK2rIys",y:2017,s:"蕭全",n:1},
+{t:"相思爬上心底",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧", "核心肌力"],u:"NKpfeBp_yZU",y:1983,s:"鳳飛飛",n:1},
+{t:"歡喜就好",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"VF2-Xbyvs_I",y:1993,s:"陳雷",n:1},
+{t:"New Face",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"UmhqraIt4QE",y:2020,n:1},
+{t:"熱情的沙漠（Max爆汗版）",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"AF0rpRswpZk",y:1974,s:"歐陽菲菲",n:1},
+{t:"姊姊（電音有氧）",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"oxaISN4r4ks",y:2013,s:"謝金燕",n:1},
+{t:"愛你",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"O75riv4Nrfk",y:2004,s:"王心凌",n:1},
+{t:"痴情玫瑰花",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"ITB9s0UxNHY",y:2015,s:"地下情人",n:1},
+{t:"眉飛色舞",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"bBEMejiLQlw",y:1995,s:"鄭秀文",n:1},
+{t:"卡路里",r:"台灣",c:TW,g:["坐姿", "無道具", "有氧"],u:"THsfX6wofoE",y:2018,s:"火箭少女101",n:1},
+{t:"保庇",r:"台灣",c:MAX,g:["站姿", "無道具", "肌力", "帶動跳", "有氧"],u:"L9W_kSyXFM4",y:2010,s:"王彩樺",n:1},
+{t:"為自己乾杯",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"8PHZS_xpBy8",y:-1,n:1},
+{t:"墓仔埔也敢去",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"STXC_z10HXM",y:1964,s:"葉啟田",n:1},
+{t:"燃燒吧火鳥",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"-iJlevUyuJI",y:1983,s:"姜育恆",n:1},
+{t:"冬天裡的一把火＋熱情的沙漠（組曲）",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"cxYxXXcYMT8",y:1986,s:"費翔・庾澄慶",n:1},
+{t:"青蘋果樂園",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"cqI8VjERPuQ",y:1992,s:"小虎隊",n:1},
+{t:"瀟灑走一回",r:"台灣",c:TW,g:["站姿", "無道具", "動腦", "有氧"],u:"lprsAhwE-BA",y:1991,s:"葉蒨文",n:1},
+{t:"流浪到淡水",r:"台灣",c:"曾小貞健康操",g:["站姿", "無道具", "帶動跳", "有氧"],u:"MEE4EWBdl5w",y:1996,s:"金門王・李炳輝",n:1},
+{t:"追追追",r:"台灣",c:"悠活健康促進",g:["站姿", "無道具", "帶動跳", "有氧"],u:"e7UVQwUtN2Q",y:1997,s:"黃妃",n:1},
+{t:"家後",r:"台灣",c:"蔡秀秀",g:["坐姿", "無道具", "有氧"],u:"A24UcbzYT4s",y:2001,s:"江蕙",n:1},
+{t:"熱愛105度的你",r:"台灣",c:MAX,g:["站姿", "無道具", "伸展", "帶動跳", "有氧"],u:"tSeacnvNeZ4",y:2021,s:"阿肆",n:1},
+{t:"何日君再來",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"Sc-VdBeDpUM",y:1937,s:"周璇・鄧麗君",n:1},
+{t:"高山青",r:"台灣",c:TW,g:["站姿", "無道具", "有氧"],u:"Be8BxMXbeTM",y:1949,n:1},
+{t:"戀愛ING",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"4nKz0t5OqfU",y:2005,s:"五月天",n:1},
+{t:"東區東區",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"9lsgGTCDOrs",y:2012,s:"八三夭",n:1},
+{t:"夏天的浪花",r:"台灣",c:"Gina Peng Fitness",g:["站姿", "無道具", "有氧"],u:"uLnbwLJQka4",y:1982,s:"高凌風",n:1},
+{t:"我是一隻小小鳥",r:"台灣",c:"曾小貞健康操",g:["站姿", "無道具", "帶動跳", "有氧"],u:"Gu8DqoiJgFc",y:1990,s:"趙傳",n:1},
+{t:"阿里山的姑娘",r:"台灣",c:"DorDor Workshop",g:["站姿", "無道具", "動腦", "有氧"],u:"Ipwbp3ZU0A4",y:1949,n:1},
+{t:"我愛那魯哇（我們都是一家人）",r:"台灣",c:TW,g:["坐姿", "無道具", "帶動跳", "椅子舞", "有氧"],u:"CrSWNcaO3I4",y:-1,n:1},
+{t:"恰似你的溫柔",r:"台灣",c:"Gina Peng Fitness",g:["坐姿", "有道具", "肌力", "有氧"],u:"xB_IBNr7JOs",y:1979,s:"蔡琴",n:1},
+{t:"綠島小夜曲",r:"台灣",c:TW,g:["坐姿", "有道具", "有氧"],u:"CNGagZmN8ng",y:1954,s:"紫薇",n:1},
+{t:"城裡的月光",r:"台灣",c:"Gina Peng Fitness",g:["坐姿", "有道具", "有氧"],u:"bMWeiy5BAlQ",y:1994,s:"許美靜",n:1},
+{t:"感恩的心",r:"台灣",c:"鄭芳枝舞蹈新頻道",g:["站姿", "無道具", "帶動跳", "有氧"],u:"UWDJ8wIiq0U",y:1994,s:"歐陽菲菲",n:1},
+{t:"萍聚",r:"台灣",c:"梁睿涵",g:["站姿", "無道具", "帶動跳", "有氧"],u:"Y7e30NQRino",y:1988,s:"李翊君",n:1},
+{t:"祝你幸福",r:"台灣",c:"澄心悅藝",g:["站姿", "無道具", "有氧"],u:"k1O3AJxM6TY",y:1972,s:"鳳飛飛",n:1},
+{t:"風飛沙",r:"台灣",c:"士林靈糧堂社區老人服務",g:["站姿", "無道具", "動腦", "有氧"],u:"w7m2bbidaQI",y:1987,s:"陳盈潔",n:1},
+{t:"酒矸倘賣無",r:"台灣",c:"葉幸芝",g:["站姿", "無道具", "帶動跳", "有氧"],u:"nE-hqXPZj2A",y:1983,s:"蘇芮",n:1},
+{t:"魯冰花",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"XI-qn1LLil8",y:1989,s:"甄妮",n:1},
+{t:"明天會更好",r:"台灣",c:"笑春風廣場舞",g:["站姿", "無道具", "帶動跳", "有氧"],u:"w_aiOtdcLtE",y:1985,s:"群星",n:1},
+{t:"天公落水",r:"台灣",c:"林維茜 Vicky Lin",g:["站姿", "無道具", "有氧"],u:"FYLFpE979Yc",y:0,n:1},
+{t:"關仔嶺之戀",r:"台灣",c:TW,g:["站姿", "無道具", "有氧"],u:"QFzQOpo6_jc",y:1960,s:"吳晉淮",n:1},
+{t:"桃花過渡",r:"台灣",c:"白嘉慧",g:["坐姿", "無道具", "有氧"],u:"Qdu3XdeMYd8",y:0,n:1},
+{t:"採茶歌",r:"台灣",c:"Ryan Wang",g:["坐姿", "無道具", "有氧"],u:"0clx7LF8X0U",y:0,n:1},
+{t:"客家本色",r:"台灣",c:MAX,g:["站姿", "有道具", "肌力", "帶動跳", "有氧"],u:"OcmI8uuBVoI",y:1988,s:"涂敏恆",n:1},
+{t:"渡情",r:"台灣",c:"笑春風廣場舞",g:["站姿", "無道具", "帶動跳", "有氧"],u:"Nbchk10Arus",y:1992,s:"葉玉卿",n:1},
+{t:"走在陽光裡",r:"台灣",c:"Gina Peng Fitness",g:["坐姿", "有道具", "肌力", "有氧"],u:"LsA2YIJc4uQ",y:-1,s:"林慧萍",n:1},
+{t:"茉莉花",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"MYz1w4BtzYc",y:0,n:1},
+{t:"青春嶺",r:"台灣",c:"陳采婕-起子",g:["站姿", "無道具", "有氧"],u:"mvI432K9eA0",y:1936,n:1},
+{t:"農村曲",r:"台灣",c:"嘉基大社區",g:["坐姿", "無道具", "有氧"],u:"-jf5X5VTeU8",y:1937,n:1},
+{t:"牛犁歌",r:"台灣",c:"塗貴美",g:["站姿", "有道具", "有氧"],u:"pwHJHAP9ZF0",y:0,n:1},
+{t:"丟丟銅仔",r:"台灣",c:"Yana亞娜",g:["站姿", "無道具", "有氧"],u:"76vmYF_jorg",y:0,n:1},
+{t:"雨夜花",r:"台灣",c:"🌹Anny Chi🌹",g:["站姿", "有道具", "伸展", "有氧"],u:"gS9v2cYrSqU",y:1934,n:1},
+{t:"黃昏的故鄉",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"8777a08au_c",y:1958,s:"文夏",n:1},
+{t:"孤女的願望",r:"台灣",c:"asy8088",g:["站姿", "無道具", "有氧"],u:"qfIb82JVkWQ",y:1959,s:"陳芬蘭",n:1},
+{t:"水車姑娘",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"8TT0fF9Kzsw",y:1967,s:"陳淑樺",n:1},
+{t:"內山姑娘要出嫁",r:"台灣",c:MAX,g:["站姿", "無道具", "帶動跳", "有氧"],u:"a2CUcQXp51o",y:-1,n:1},
+{t:"回想曲",r:"台灣",c:TW,g:["坐姿", "有道具", "有氧"],u:"wYVshTAJPMg",y:-1,n:1},
+{t:"歡喜就好",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"wmTFZEG061A",y:1993,s:"陳雷",n:1},
+{t:"小城故事",r:"台灣",c:"謝美惠樂齡運動舞蹈",g:["坐姿", "有道具", "有氧"],u:"h_PEVgDYpDI",y:1979,s:"鄧麗君",n:1},
+{t:"心花開",r:"台灣",c:TW,g:["坐姿", "無道具", "椅子舞", "有氧"],u:"6bHLKKXKadM",y:2011,s:"李千娜",n:1},
+{t:"浪子回頭",r:"台灣",c:"晴天排舞班",g:["站姿", "無道具", "帶動跳", "有氧"],u:"C3cxspgKH9E",y:2016,s:"茄子蛋",n:1},
+{t:"上を向いて歩こう",r:"日本",c:"SEITOSHA",g:["坐姿", "無道具", "有氧"],u:"lMxVCNgB4Ww",y:1961,s:"坂本九",n:1},
+{t:"高校三年生",r:"日本",c:"スギリハCH「歌体操・健康体操」",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"mLHGbR0tcfk",y:1963,s:"舟木一夫",n:1},
+{t:"いつでも夢を",r:"日本",c:"湊ヨーコの懐メロでいきいき体操!!",g:["坐姿", "無道具", "動腦", "有氧"],u:"wvgTdvU1eF8",y:1962,s:"橋幸夫・吉永小百合",n:1},
+{t:"北国の春",r:"日本",c:"【音楽療法】ドレミ株式会社",g:["坐姿", "有道具", "椅子舞", "有氧"],u:"V9Yb3JUBy7Q",y:1977,s:"千昌夫",n:1},
+{t:"川の流れのように",r:"日本",c:"とととチャンネル【理学療法士×ダンス】",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"JTi0reg6Ieg",y:1989,s:"美空ひばり",n:1},
+{t:"瀬戸の花嫁",r:"日本",c:"津田福祉会さわやか介護",g:["坐姿", "無道具", "有氧"],u:"oIeA2EOiHy8",y:1972,s:"小柳ルミ子",n:1},
+{t:"青い山脈",r:"日本",c:"スギリハCH「歌体操・健康体操」",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"pVzE_FkRfko",y:1949,s:"藤山一郎",n:1},
+{t:"東京ブギウギ",r:"日本",c:"介福ラボ",g:["坐姿", "無道具", "伸展", "有氧"],u:"_6bTDm9CGII",y:1947,s:"笠置シヅ子",n:1},
+{t:"銀座カンカン娘",r:"日本",c:"スギリハCH「歌体操・健康体操」",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"VHrfFc-2JE4",y:1949,s:"高峰秀子",n:1},
+{t:"真赤な太陽",r:"日本",c:"おどる介護士うっしーのダンス体操",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"7sXHQum1iLo",y:1967,s:"美空ひばり",n:1},
+{t:"見上げてごらん夜の星を",r:"日本",c:"みやき町健康教室",g:["坐姿", "無道具", "有氧"],u:"0WFVrmJ7iGU",y:1963,s:"坂本九",n:1},
+{t:"星影のワルツ",r:"日本",c:"介福ラボ",g:["坐姿", "無道具", "有氧"],u:"RVSpEypKcCY",y:1966,s:"千昌夫",n:1},
+{t:"恋のバカンス",r:"日本",c:"介福ラボ",g:["坐姿", "無道具", "伸展", "有氧"],u:"3q-h1m0K4_c",y:1963,s:"ザ・ピーナッツ",n:1},
+{t:"函館の女",r:"日本",c:"スギリハCH「歌体操・健康体操」",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"YfsIQmK-wDg",y:1965,s:"北島三郎",n:1},
+{t:"与作",r:"日本",c:"湊ヨーコの懐メロでいきいき体操!!",g:["坐姿", "無道具", "椅子舞", "動腦", "有氧"],u:"ENGV5wjzd8Y",y:1978,s:"北島三郎",n:1},
+{t:"東京音頭",r:"日本",c:"Orangeルーチンワークアウト",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"2t-cJq3Orqo",y:1933,n:1},
+{t:"花笠音頭",r:"日本",c:"すくいく YouTubeチャンネル",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"9Qu3XGP7Np8",y:0,n:1},
+{t:"ソーラン節",r:"日本",c:"free Age fitness",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"pvXKbbx4l6s",y:0,n:1},
+{t:"お座敷小唄",r:"日本",c:"ミュージックインストラクターズ養成学院チャンネル",g:["坐姿", "無道具", "有氧"],u:"UDIIMaExtwQ",y:1964,s:"松尾和子・和田弘",n:1},
+{t:"矢切の渡し",r:"日本",c:"にこにこ 体操",g:["坐姿", "無道具", "動腦", "有氧"],u:"xMA5-nWBY08",y:1983,s:"細川たかし",n:1},
+{t:"愛燦燦",r:"日本",c:"介福ラボ",g:["坐姿", "無道具", "有氧"],u:"ncjavxDt5TE",y:1986,s:"美空ひばり",n:1},
+{t:"ふるさと",r:"日本",c:"【健康運動指導士】　健康　守の　目指せ! 健康‼︎チャンネル",g:["坐姿", "無道具", "有氧"],u:"FcpGh785We0",y:1914,n:1},
+{t:"紅葉",r:"日本",c:"SEITOSHA",g:["坐姿", "無道具", "有氧"],u:"ftxt6Y0W1dU",y:1911,n:1},
+{t:"春が来た",r:"日本",c:"ふくくる君【高齢者向け介護体操や口腔体操、介護レクに使える動画を専門家がお届け】",g:["坐姿", "無道具", "有氧"],u:"N_K7Bng4iD8",y:1910,n:1},
+{t:"早春賦",r:"日本",c:"SEITOSHA",g:["坐姿", "無道具", "有氧"],u:"qrOGtIqmA7Q",y:1913,n:1},
+{t:"茶摘み",r:"日本",c:"ふくくる君【高齢者向け介護体操や口腔体操、介護レクに使える動画を専門家がお届け】",g:["坐姿", "無道具", "有氧"],u:"zM5fV7ZA1Kk",y:1912,n:1},
+{t:"我は海の子",r:"日本",c:"スギリハCH「歌体操・健康体操」",g:["坐姿", "無道具", "有氧"],u:"UgSvGSUfpuU",y:1910,n:1},
+{t:"虫のこえ",r:"日本",c:"SEITOSHA",g:["坐姿", "無道具", "有氧"],u:"dd-OUDM2rCI",y:1910,n:1},
+{t:"雪やこんこ",r:"日本",c:"健康向上企画 鈴木孝一",g:["坐姿", "無道具", "動腦", "有氧"],u:"S0Vk763xBZI",y:1911,n:1},
+{t:"お正月",r:"日本",c:"スギリハCH「歌体操・健康体操」",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"9sqLkJb2I-w",y:1901,n:1},
+{t:"旅愁",r:"日本",c:"SEITOSHA",g:["坐姿", "無道具", "有氧"],u:"pJMdBzYPa88",y:1907,n:1},
+{t:"Y.M.C.A.",r:"歐美",c:"Susanna Whitsett",g:["坐姿", "無道具", "有氧"],u:"3RQ3gT5LdZM",y:1978,s:"Village People",n:1},
+{t:"Dancing Queen",r:"歐美",c:"Chair One Fitness",g:["坐姿", "無道具", "有氧"],u:"ZUpQPjafmMc",y:1976,s:"ABBA",n:1},
+{t:"Mamma Mia",r:"歐美",c:"Sprinkle Motion",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"uCgPtfNF8i8",y:1975,s:"ABBA",n:1},
+{t:"Waterloo",r:"歐美",c:"WeThinkYouCanDance",g:["坐姿", "無道具", "有氧"],u:"2FEvNeAchQk",y:1974,s:"ABBA",n:1},
+{t:"Can't Stop the Feeling",r:"歐美",c:"Yoga Vista",g:["坐姿", "無道具", "伸展", "椅子舞", "有氧"],u:"9GS1CWDIkYU",y:2016,s:"Justin Timberlake",n:1},
+{t:"Stand by Me",r:"歐美",c:"RED LINDA [김덕화댄스아카데미]입니다",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"FunHO8Gwvbw",y:1961,s:"Ben E. King",n:1},
+{t:"What a Wonderful World",r:"歐美",c:"Yoga Vista",g:["坐姿", "無道具", "伸展", "有氧"],u:"G_IOLx7uruw",y:1967,s:"Louis Armstrong",n:1},
+{t:"Can't Help Falling in Love",r:"歐美",c:"Move with Bella",g:["坐姿", "無道具", "有氧"],u:"3U7gYoOpB7c",y:1961,s:"Elvis Presley",n:1},
+{t:"Rasputin",r:"歐美",c:"EVELYN RICANQUI",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"-ge5d9b6OmU",y:1978,s:"Boney M.",n:1},
+{t:"Wake Me Up Before You Go-Go",r:"歐美",c:"The Crochety Clogger",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"YN1j-fZjmHQ",y:1984,s:"Wham!",n:1},
+{t:"Footloose",r:"歐美",c:"Christine Hollister",g:["坐姿", "無道具", "有氧"],u:"38PlkioyfvE",y:1984,s:"Kenny Loggins",n:1},
+{t:"I Will Survive",r:"歐美",c:"Dancing with ANNE-CLAIRE",g:["坐姿", "無道具", "有氧"],u:"3hl3nzbZkuU",y:1978,s:"Gloria Gaynor",n:1},
+{t:"September",r:"歐美",c:"Dance Along Gal",g:["坐姿", "無道具", "伸展", "椅子舞", "有氧"],u:"xqMvqphQrh0",y:1978,s:"Earth, Wind & Fire",n:1},
+{t:"My Girl",r:"歐美",c:"Do Fitness",g:["坐姿", "無道具", "有氧"],u:"HioZS1GkdnQ",y:1964,s:"The Temptations",n:1},
+{t:"Ain't No Mountain High Enough",r:"歐美",c:"Heather Gerlach",g:["坐姿", "無道具", "有氧"],u:"WzGDnVKomZU",y:1967,s:"Marvin Gaye",n:1},
+{t:"Build Me Up Buttercup",r:"歐美",c:"Sprinkle Motion",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"_YvWdBnspKY",y:1968,s:"The Foundations",n:1},
+{t:"Sweet Dreams",r:"歐美",c:"All The Way Up",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"iV88BwB9HxY",y:1983,s:"Eurythmics",n:1},
+{t:"Karma Chameleon",r:"歐美",c:"Dance With Noriko's Timeless Grooves",g:["坐姿", "無道具", "肌力", "有氧"],u:"iF6Jizu-IjY",y:1983,s:"Culture Club",n:1},
+{t:"Wake Up Little Susie",r:"歐美",c:"Dance Along Gal",g:["坐姿", "無道具", "伸展", "椅子舞", "有氧"],u:"QzGmIPZTXhs",y:1957,s:"Everly Brothers",n:1},
+{t:"Johnny B. Goode",r:"歐美",c:"Zumba with Mary Beth",g:["坐姿", "無道具", "有氧"],u:"oKZMjcjE-GE",y:1958,s:"Chuck Berry",n:1},
+{t:"Diana",r:"歐美",c:"RITA MANALO HAMMOND /MABUHAY FOUNDATION",g:["站姿", "無道具", "有氧"],u:"SC-6ggMHZhc",y:1957,s:"Paul Anka",n:1},
+{t:"Proud Mary",r:"歐美",c:"Kristie Baxter",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"Hzrvs3mTFsY",y:1969,s:"Creedence Clearwater Revival",n:1},
+{t:"I Want to Hold Your Hand",r:"歐美",c:"Sing Along with Susie Q",g:["坐姿", "無道具", "有氧"],u:"1SDNOEaNZcw",y:1963,s:"The Beatles",n:1},
+{t:"Don't Worry, Be Happy",r:"歐美",c:"Giana Eden",g:["坐姿", "無道具", "有氧"],u:"A28bvX7csNY",y:1988,s:"Bobby McFerrin",n:1},
+{t:"Uptown Funk",r:"歐美",c:"Helen Webster",g:["坐姿", "無道具", "有氧"],u:"4igCUXafEww",y:2014,s:"Mark Ronson ft. Bruno Mars",n:1},
+{t:"Happy Together",r:"歐美",c:"Yoga Vista",g:["坐姿", "無道具", "伸展", "椅子舞", "有氧"],u:"vUPNrmxMCVw",y:1967,s:"The Turtles",n:1},
+{t:"Hit the Road Jack",r:"歐美",c:"Erin Blackburn Fitness",g:["坐姿", "無道具", "有氧"],u:"0bt-R4byaLw",y:1961,s:"Ray Charles",n:1},
+{t:"Hound Dog",r:"歐美",c:"EVELYN RICANQUI",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"U_N31WbP2b0",y:1956,s:"Elvis Presley",n:1},
+{t:"Take Me Home, Country Roads",r:"歐美",c:"Dance Along Gal",g:["坐姿", "無道具", "伸展", "椅子舞", "有氧"],u:"Wnbaf7nBvoA",y:1971,s:"John Denver",n:1},
+{t:"Top of the World",r:"歐美",c:"冰冰老師Candy",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"vOAAHm1D5Go",y:1972,s:"Carpenters",n:1},
+{t:"Yesterday Once More",r:"歐美",c:"Chair Zumba Gold With Vickie",g:["坐姿", "無道具", "有氧"],u:"iataqyi7irU",y:1973,s:"Carpenters",n:1},
+{t:"Close to You",r:"歐美",c:"김은정 Cona",g:["坐姿", "無道具", "椅子舞", "有氧"],u:"EmDWaSCiuM4",y:1970,s:"Carpenters",n:1},
+{t:"Sugar, Sugar",r:"歐美",c:"Yoga Vista",g:["坐姿", "無道具", "伸展", "椅子舞", "有氧"],u:"bm50JIKYYZQ",y:1969,s:"The Archies",n:1},
+{t:"Locomotion",r:"歐美",c:"We Keep Moving",g:["坐姿", "無道具", "有氧"],u:"Ocv4wWhqTyE",y:1962,s:"Little Eva",n:1},
+{t:"Limbo Rock",r:"歐美",c:"Alexis Perkins",g:["坐姿", "無道具", "有氧"],u:"P3Me7x899_0",y:1962,s:"Chubby Checker",n:1},
+{t:"Over the Rainbow",r:"歐美",c:"Yoga Vista Chair Yoga Dance",g:["坐姿", "無道具", "伸展", "椅子舞", "有氧"],u:"mKkGoUYruEo",y:1939,s:"Judy Garland",n:1},
+{t:"我只在乎你",r:"台灣",c:TW,g:["站姿", "無道具", "帶動跳", "有氧"],u:"F3065Xtbd9k",y:1987,s:"鄧麗君",n:1},
+{t:"津軽海峡・冬景色",r:"日本",c:"介福ラボ",g:["坐姿", "無道具", "伸展", "有氧"],u:"1oEsJLx95bQ",y:1977,s:"石川さゆり",n:1},
+{t:"炭坑節",r:"日本",c:"ふくくる君【高齢者向け介護体操や口腔体操、介護レクに使える動画を専門家がお届け】",g:["坐姿", "無道具", "有氧"],u:"6qUbf3iVZD4",y:0,n:1}
 ];
 
-const GROUPS = [
-  {label:"地區", region:true, tags:["台灣","日本","歐美"]},
-  {label:"姿勢", tags:["坐姿","站姿"]},
-  {label:"類型", tags:["有氧","肌力","伸展","帶動跳","椅子舞"]},
-  {label:"道具", tags:["無道具"]},
-  {label:"來源", tags:["其他頻道"]}
+const DECADES=[
+  {k:"folk",lab:"民謠",sub:"童謠"},
+  {k:1930,lab:"1930",sub:"年代"},{k:1940,lab:"1940",sub:"年代"},{k:1950,lab:"1950",sub:"年代"},
+  {k:1960,lab:"1960",sub:"年代"},{k:1970,lab:"1970",sub:"年代"},{k:1980,lab:"1980",sub:"年代"},
+  {k:1990,lab:"1990",sub:"年代"},{k:2000,lab:"2000",sub:"年代"},{k:2010,lab:"2010",sub:"年代"},{k:2020,lab:"2020",sub:"年代"},
+  {k:"unk",lab:"待查",sub:"年代"}
 ];
+const decOf=v=>v.y<0?"unk":(v.y<1930?"folk":Math.floor(v.y/10)*10);
+const decName=k=>k==="folk"?"民謠・童謠":k==="unk"?"年代待查":`${k} 年代`;
+V.forEach(v=>{v.d=decOf(v); v.p=v.g.includes("站姿")?"站姿":"坐姿";});
 
-const selected = new Set();
-const qEl = document.getElementById('q');
-const listEl = document.getElementById('list');
-const countEl = document.getElementById('count');
-const filtersEl = document.getElementById('filters');
+const MAJOR=[TW,MAX,"悠活健康促進","葉嘉淇","Chair Yoga Dance","Yoga Vista"];
+const chOf=v=>MAJOR.includes(v.c)?v.c:"其他頻道";
+const GROUPS=[
+  {key:"r",label:"地區",tags:["台灣","日本","歐美"]},
+  {key:"g",label:"類型",tags:["有氧","肌力","伸展","帶動跳","椅子舞","動腦"]},
+  {key:"g",label:"道具",tags:["無道具","有道具"]},
+  {key:"ch",label:"頻道",tags:[TW,MAX,"悠活健康促進","葉嘉淇","Chair Yoga Dance","Yoga Vista","其他頻道"]},
+  {key:"n",label:"收錄",tags:["本次新增"]}
+];
+const has=(v,grp,tag)=>{
+  if(grp.key==="r") return v.r===tag;
+  if(grp.key==="ch") return chOf(v)===tag;
+  if(grp.key==="n") return !!v.n;
+  return v.g.includes(tag);
+};
 
-GROUPS.forEach(grp=>{
-  const row = document.createElement('div'); row.className='group';
-  const lab = document.createElement('span'); lab.className='glabel'; lab.textContent=grp.label;
-  row.appendChild(lab);
-  grp.tags.forEach(tg=>{
-    const b = document.createElement('span'); b.className='tag'+(grp.region?' region':''); b.textContent=tg;
-    b.onclick=()=>{ b.classList.toggle('on'); if(selected.has(tg))selected.delete(tg);else selected.add(tg); render(); };
-    row.appendChild(b);
-  });
-  filtersEl.appendChild(row);
+let pose="";
+const selDec=new Set(), sel=new Map();
+const $=id=>document.getElementById(id);
+const qEl=$("q"), listEl=$("list"), countEl=$("count"), sortEl=$("sort");
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// 坐姿／站姿
+$("pc-all").textContent=`${V.length} 支`;
+$("pc-sit").textContent=`${V.filter(v=>v.p==="坐姿").length} 支`;
+$("pc-stand").textContent=`${V.filter(v=>v.p==="站姿").length} 支`;
+document.querySelectorAll(".pbtn").forEach(b=>{
+  b.setAttribute("aria-pressed",b.classList.contains("on"));
+  b.onclick=()=>{ pose=b.dataset.p; document.querySelectorAll(".pbtn").forEach(x=>{x.classList.toggle("on",x===b);x.setAttribute("aria-pressed",x===b);}); render(); };
 });
 
-function videoTags(v){ return [v.r, ...v.g]; }
+// 年代時間軸
+const decCount={}; V.forEach(v=>decCount[v.d]=(decCount[v.d]||0)+1);
+const maxDec=Math.max(...Object.values(decCount));
+DECADES.forEach(d=>{
+  const n=decCount[d.k]||0; if(!n) return;
+  const b=document.createElement("button"); b.className="dec"; b.type="button"; b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<div class="bar" style="height:${Math.round(6+n/maxDec*46)}px"></div><div class="lab">${d.lab}<i>${d.sub}</i></div><div class="n">${n} 首</div>`;
+  b.onclick=()=>{ selDec.has(d.k)?selDec.delete(d.k):selDec.add(d.k); b.classList.toggle("on"); b.setAttribute("aria-pressed",selDec.has(d.k)); render(); };
+  $("timeline").appendChild(b);
+});
+
+// 其他篩選
+GROUPS.forEach((grp,gi)=>{
+  sel.set(gi,new Set());
+  const row=document.createElement("div"); row.className="group";
+  row.innerHTML=`<span class="glabel">${grp.label}</span>`;
+  grp.tags.forEach(tg=>{
+    const n=V.filter(v=>has(v,grp,tg)).length; if(!n) return;
+    const b=document.createElement("button"); b.className="tag"; b.type="button";
+    b.innerHTML=`${esc(tg.replace("【挖健康】"," "))}<span class="k">${n}</span>`;
+    b.onclick=()=>{ const s=sel.get(gi); s.has(tg)?s.delete(tg):s.add(tg); b.classList.toggle("on"); render(); };
+    row.appendChild(b);
+  });
+  $("filters").appendChild(row);
+});
 
 function matches(v){
-  const q = qEl.value.trim().toLowerCase();
-  if(q && !v.t.toLowerCase().includes(q)) return false;
-  for(const grp of GROUPS){
-    const sel = grp.tags.filter(t=>selected.has(t));
-    if(sel.length===0) continue;
-    const vt = videoTags(v);
-    if(!sel.some(t=>vt.includes(t))) return false;
-  }
+  const q=qEl.value.trim().toLowerCase();
+  if(q && !(v.t.toLowerCase().includes(q)||v.c.toLowerCase().includes(q)||(v.s||"").toLowerCase().includes(q))) return false;
+  if(pose && v.p!==pose) return false;
+  if(selDec.size && !selDec.has(v.d)) return false;
+  for(const [gi,s] of sel){ if(s.size && ![...s].some(t=>has(v,GROUPS[gi],t))) return false; }
   return true;
 }
 
+const REG=["台灣","日本","歐美"];
+const decIdx=k=>DECADES.findIndex(d=>d.k===k);
+function card(v){
+  const yr=v.d==="folk"?`<span class="year folk">民謠・童謠</span>`:v.d==="unk"?"":`<span class="year" title="${decName(v.d)}">${v.y}</span>`;
+  const cls=v.p==="坐姿"?"sit":"stand";
+  const tags=[`<span class="ct region">${v.r}</span>`,...v.g.filter(t=>t!=="坐姿"&&t!=="站姿").map(t=>`<span class="ct">${t}</span>`)];
+  if(v.n) tags.push(`<span class="ct new">本次新增</span>`);
+  return `<div class="card ${cls}" data-u="${v.u}"><div class="top"><div class="ctitle">${esc(v.t)}</div>${yr}</div>
+    <span class="poseb ${cls}">${v.p}律動</span>
+    <div class="meta">${v.s?"原唱 "+esc(v.s)+"　·　":""}${esc(v.c)}</div>
+    <div class="ctags">${tags.join("")}</div>
+    <a class="play" href="https://www.youtube.com/watch?v=${v.u}" target="_blank" rel="noopener">▶ 在 YouTube 觀看</a></div>`;
+}
 function render(){
-  const rows = V.filter(matches);
-  countEl.textContent = `顯示 ${rows.length} / ${V.length} 支`;
-  listEl.innerHTML = '';
-  if(rows.length===0){ listEl.innerHTML='<div class="empty">找不到符合的影片，試試其他關鍵字或清除篩選。</div>'; return; }
-  rows.forEach(v=>{
-    const card = document.createElement('div'); card.className='card';
-    const tags = videoTags(v).map(t=>`<span class="ct${t===v.r?' region':''}">${t}</span>`).join('');
-    card.innerHTML = `
-      <div class="ctitle">${v.t}</div>
-      <div class="meta">📺 ${v.c}　·　⏱ 約 3–5 分</div>
-      <div class="ctags">${tags}</div>
-      <a class="play" href="https://www.youtube.com/watch?v=${v.u}" target="_blank" rel="noopener">▶ 在 YouTube 觀看</a>`;
-    listEl.appendChild(card);
-  });
+  const rows=V.filter(matches), mode=sortEl.value;
+  const nSel=selDec.size+[...sel.values()].reduce((a,s)=>a+s.size,0);
+  const badge=$("selbadge"); badge.style.display=nSel?"inline-block":"none"; badge.textContent=nSel;
+  countEl.innerHTML=`顯示 <b>${rows.length}</b> / ${V.length} 支`;
+  if(!rows.length){ listEl.innerHTML='<div class="empty">找不到符合的影片，試試其他關鍵字或清除篩選。</div>'; return; }
+  let html="";
+  const byTitle=(a,b)=>a.t.localeCompare(b.t,"zh-Hant");
+  if(mode==="title"){ html=rows.sort(byTitle).map(card).join(""); }
+  else{
+    const keyOf=mode==="region"?(v=>v.r):(v=>v.d);
+    const order=mode==="region"?[...REG]:DECADES.map(d=>d.k);
+    if(mode==="decade-desc"){ order.reverse(); order.push(order.shift()); } // 待查放最後
+    order.forEach(k=>{
+      const part=rows.filter(v=>keyOf(v)===k); if(!part.length) return;
+      part.sort(mode==="region"?((a,b)=>decIdx(a.d)-decIdx(b.d)||a.y-b.y):((a,b)=>a.y-b.y||REG.indexOf(a.r)-REG.indexOf(b.r)||byTitle(a,b)));
+      html+=`<div class="sec">${mode==="region"?k:decName(k)}<span>${part.length} 支</span></div>`+part.map(card).join("");
+    });
+  }
+  listEl.innerHTML=html;
 }
 
-// collapsible filter toggle (default collapsed on mobile, open on desktop)
-const toggleEl = document.getElementById('filtertoggle');
-const badgeEl = document.getElementById('selbadge');
-function updateBadge(){
-  const n = selected.size;
-  badgeEl.style.display = n ? 'inline-block' : 'none';
-  badgeEl.textContent = n;
-}
-toggleEl.onclick=()=>{
-  filtersEl.classList.toggle('hidden');
-  toggleEl.classList.toggle('open', !filtersEl.classList.contains('hidden'));
+$("lucky").onclick=()=>{
+  const rows=V.filter(matches); if(!rows.length) return;
+  const v=rows[Math.floor(Math.random()*rows.length)];
+  const el=listEl.querySelector(`[data-u="${v.u}"]`); if(!el) return;
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
 };
-if(window.innerWidth>=680){ filtersEl.classList.remove('hidden'); toggleEl.classList.add('open'); }
+const tgl=$("filtertoggle"), fl=$("filters");
+tgl.onclick=()=>{ fl.classList.toggle("hidden"); const open=!fl.classList.contains("hidden"); tgl.classList.toggle("open",open); tgl.setAttribute("aria-expanded",open); };
+qEl.addEventListener("input",render);
+sortEl.addEventListener("change",render);
+$("clear").onclick=()=>{
+  selDec.clear(); sel.forEach(s=>s.clear()); qEl.value=""; pose="";
+  document.querySelectorAll(".tag.on,.dec.on").forEach(b=>{b.classList.remove("on");b.setAttribute("aria-pressed","false");});
+  document.querySelectorAll(".pbtn").forEach(x=>{const on=x.dataset.p==="";x.classList.toggle("on",on);x.setAttribute("aria-pressed",on);});
+  render();
+};
 
-qEl.addEventListener('input', render);
-document.getElementById('clear').onclick=()=>{
-  selected.clear(); qEl.value='';
-  document.querySelectorAll('.tag.on').forEach(b=>b.classList.remove('on'));
-  updateBadge(); render();
-};
-const _origRender = render;
-render = function(){ _origRender(); updateBadge(); };
+const chc={}; V.forEach(v=>chc[v.c]=(chc[v.c]||0)+1);
+$("chlist").textContent="各頻道收錄數："+Object.entries(chc).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`${c}（${n}）`).join("、")+"。";
 render();
 </script>
 </body>
